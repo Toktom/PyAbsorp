@@ -1,3 +1,4 @@
+
 """
 Project description: a script containing all implemantations of the scientific
 methods to found the absortion coefficient.
@@ -56,6 +57,13 @@ def delany_bazley(freq, fluxRes, soundSpd, airDens):
     return Zc, kc
 
 
+def delany_bazley_absortion(Zc, kc, d, cImpAir):
+    Zs = -1j * (Zc / np.tan(kc * d))
+    reflex = (Zs - cImpAir) / (Zs + cImpAir)
+    absortion = 1 - np.abs(reflex) ** 2
+    return absortion
+
+
 def shear_wave(omega, fluxRes, poros, tortus, shape, airDensAr):
     c1 = formats[shape]
     num = 8 * omega * airDensAr * tortus
@@ -85,26 +93,34 @@ def biot_allard(freq, fluxRes, poros, tortus, shape, airDens, expans, Prandtl, a
 
     compress = (expans * atm) \
         / (expans - (expans - 1) / (1 - compressB * ((compressC * compressE)
-                                                 /(1 - compressD * compressE))))
+                                             / (1 - compressD * compressE))))
 
     Zc = (compress * airDensity)**0.5
     kc = omega * (airDensity / compress)**0.5
     return Zc, kc
 
-def johnson_champoux(resist, tort, poros, visc, term, rho0, neta, Prandtl, expans, atm, freq):
+
+def biot_allard_absortion(Zc, kc, d, cImpAir):
+    Zs = -1j * (Zc / np.tan(kc * d))
+    reflex = (Zs - cImpAir) / (Zs + cImpAir)
+    absortion = 1 - np.abs(reflex) ** 2
+    return absortion
+
+
+def johnson_champoux(fluxRes, tort, poros, visc, term, airDens, neta, Prandtl, expans, atm, freq):
     omega = 2 * np.pi * freq  # Angular Frequency
 
     # RhoE
-    alpha = (1 - 1j * (4 * rho0 * (tort**2) * neta * omega) /
-             ((resist**2) * (poros**2) * (visc**2)))**(1 / 2)
-    beta = 1 + (1j * (poros * resist) / (rho0 * omega * tort)) * alpha
-    rhoE = rho0 * tort * beta
+    alpha = (1 - 1j * (4 * airDens * (tort**2) * neta * omega) /
+             ((fluxRes**2) * (poros**2) * (visc**2)))**(1 / 2)
+    beta = 1 + (1j * (poros * fluxRes) / (airDens * omega * tort)) * alpha
+    rhoE = airDens * tort * beta
 
     # kE
-    epsilon = (1 - 1j * ((4 * rho0 * Prandtl * (tort**2) * neta *omega) /
-                             ((poros**2) * (resist**2) * (term**2))))**(1 / 2)
-    zeta = (1 + (1j * ((poros * resist) /
-                            (rho0 * omega * tort * Prandtl))) * epsilon) ** -1
+    epsilon = (1 - 1j * ((4 * airDens * Prandtl * (tort**2) * neta * omega) /
+                             ((poros**2) * (fluxRes**2) * (term**2))))**(1 / 2)
+    zeta = (1 + (1j * ((poros * fluxRes) /
+                         (airDens * omega * tort * Prandtl))) * epsilon) ** -1
     eta = expans - (expans - 1) * zeta
     kE = (expans * atm) / eta
 
@@ -115,8 +131,8 @@ def johnson_champoux(resist, tort, poros, visc, term, rho0, neta, Prandtl, expan
     return zc, kc
 
 
-def johnson_champoux_absortion(zc, kc, z0, poros, d):
-    zs = 1j * (zc / poros) * (1 / np.tan(kc * d))
-    reflex = (zs - z0) / (zs + z0)
+def johnson_champoux_absortion(Zc, kc, cImpAir, poros, d):
+    Zs = 1j * (Zc / poros) * (1 / np.tan(kc * d))
+    reflex = (Zs - cImpAir) / (Zs + cImpAir)
     absortion = 1 - np.abs(reflex) ** 2
     return absortion
