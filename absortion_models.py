@@ -49,9 +49,9 @@ def delany_bazley(freq, fluxRes, soundSpd, airDens):
 
     # Complex wave number (kc)
     # kc = k0 ( Alpha + jBeta )
-    Alpha = 1 + 10.8 * (1e3 * freq / fluxRes) ** -0.7
-    Beta = -10.3 * (1e3 * freq / fluxRes) ** -0.59
-    kc = (2 * np.pi * freq / soundSpd) * (Alpha + 1j * Beta)
+    alpha = 1 + 10.8 * (1e3 * freq / fluxRes) ** -0.7
+    beta = -10.3 * (1e3 * freq / fluxRes) ** -0.59
+    kc = (2 * np.pi * freq / soundSpd) * (alpha + 1j * beta)
 
     return Zc, kc
 
@@ -60,6 +60,7 @@ def delany_bazley_absortion(Zc, kc, d, cImpAir):
     Zs = -1j * (Zc / np.tan(kc * d))
     reflex = (Zs - cImpAir) / (Zs + cImpAir)
     absortion = 1 - np.abs(reflex) ** 2
+
     return absortion
 
 
@@ -68,6 +69,7 @@ def shear_wave(omega, fluxRes, poros, tortus, shape, airDensAr):
     num = 8 * omega * airDensAr * tortus
     den = fluxRes * poros
     s = c1 * (num / den)**0.5
+
     return s
 
 
@@ -77,30 +79,29 @@ def biot_allard(freq, fluxRes, poros, tortus, shape, airDens, expans, Prandtl, a
     B = Prandtl**0.5
     s = shear_wave(omega, fluxRes, poros, tortus, shape, airDens)
 
-    airDensA = airDens * tortus
-    airDensB = (fluxRes * poros) / (1j * omega * airDens * tortus)
-    airDensC = (s * (-1j) ** 0.5) / 4
-    airDensD = 2 / (s * (-1j)**0.5)
-    airDensE = ss.jv(1, s * (-1j)**0.5) / ss.jv(0, s * (-1j)**0.5)
+    rhoEA = airDens * tortus
+    rhoEB = (fluxRes * poros) / (1j * omega * airDens * tortus)
+    rhoEC = (s * (-1j) ** 0.5) / 4
+    rhoED = 2 / (s * (-1j)**0.5)
+    rhoEE = ss.jv(1, s * (-1j)**0.5) / ss.jv(0, s * (-1j)**0.5)
 
-    airDensity = airDensA * (1 - airDensB * ((airDensC * airDensE)
-                                            / (1 - airDensD * airDensE)))
-    compressB = airDensB / B
-    compressC = airDensC * B
-    compressD = airDensD / B
-    compressE = ss.jv(1, s * B * (-1j)**0.5) / ss.jv(0, s * B * (-1j)**0.5)
+    rhoE = rhoEA * (1 - rhoEB * ((rhoEC * rhoEE) / (1 - rhoED * rhoEE)))
+    kEB = rhoEB / B
+    kEC = rhoEC * B
+    kED = rhoED / B
+    kEE = ss.jv(1, s * B * (-1j)**0.5) / ss.jv(0, s * B * (-1j)**0.5)
 
-    compress = (expans * atm) \
-        / (expans - (expans - 1) / (1 - compressB * ((compressC * compressE)
-                                             / (1 - compressD * compressE))))
+    kE = (expans * atm) \
+        / (expans - (expans - 1) / (1 - kEB * ((kEC * kEE) / (1 - kED * kEE))))
 
-    Zc = (compress * airDensity)**0.5
-    kc = omega * (airDensity / compress)**0.5
+    Zc = (kE * rhoE)**0.5
+    kc = omega * (rhoE / kE)**0.5
+
     return Zc, kc
 
 
-def biot_allard_absortion(Zc, kc, d, cImpAir):
-    Zs = -1j * (Zc / np.tan(kc * d))
+def biot_allard_absortion(Zc, kc, d, cImpAir, poros):
+    Zs = -1j * ((Zc/poros) / np.tan(kc * d))
     reflex = (Zs - cImpAir) / (Zs + cImpAir)
     absortion = 1 - np.abs(reflex) ** 2
     return absortion
