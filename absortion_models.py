@@ -118,9 +118,9 @@ def johnson_champoux(fluxRes, tort, poros, visc, term, airDens, neta, Prandtl, e
 
     # kE
     epsilon = (1 - 1j * ((4 * airDens * Prandtl * (tort**2) * neta * omega) /
-                             ((poros**2) * (fluxRes**2) * (term**2))))**(1 / 2)
+                         ((poros**2) * (fluxRes**2) * (term**2))))**(1 / 2)
     zeta = (1 + (1j * ((poros * fluxRes) /
-                         (airDens * omega * tort * Prandtl))) * epsilon) ** -1
+                       (airDens * omega * tort * Prandtl))) * epsilon) ** -1
     eta = expans - (expans - 1) * zeta
     kE = (expans * atm) / eta
 
