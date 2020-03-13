@@ -10,7 +10,6 @@ Project content:
 """
 
 import numpy as np
-from matplotlib import pyplot as plt
 from scipy import special as ss
 
 formats = {"circle": 1,
