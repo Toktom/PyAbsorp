@@ -40,7 +40,7 @@ def air_properties(temp, hum, atm):
     return soundSpd, airDens, characImpAir, viscos, expans, Prandtl, pressConst
 
 
-def delany_bazley(freq, fluxRes, soundSpd, airDens):
+def delany_bazley(freq, fluxRes, airDens, soundSpd):
     # Characteristic Impedance of the Material (Zc)
     # Zc = Zo ( R + jX )
     R = 1 + 9.08 * ((1e3 * freq / fluxRes) ** -0.75)
@@ -64,16 +64,16 @@ def delany_bazley_absortion(Zc, kc, d, cImpAir):
     return absortion
 
 
-def shear_wave(omega, fluxRes, poros, tortus, shape, airDensAr):
+def shear_wave(omega, fluxRes, poros, tortus, shape, airDens):
     c1 = formats[shape]
-    num = 8 * omega * airDensAr * tortus
+    num = 8 * omega * airDens * tortus
     den = fluxRes * poros
     s = c1 * (num / den)**0.5
 
     return s
 
 
-def biot_allard(freq, fluxRes, poros, tortus, shape, airDens, expans, Prandtl, atm):
+def biot_allard(freq, fluxRes, airDens, poros, tortus, expans, Prandtl, atm, shape):
 
     omega = 2 * np.pi * freq
     B = Prandtl**0.5
@@ -107,7 +107,7 @@ def biot_allard_absortion(Zc, kc, d, cImpAir, poros):
     return absortion
 
 
-def johnson_champoux(fluxRes, tort, poros, visc, term, airDens, neta, Prandtl, expans, atm, freq):
+def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, visc, term, neta):
     omega = 2 * np.pi * freq  # Angular Frequency
 
     # RhoE
