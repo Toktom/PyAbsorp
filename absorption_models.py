@@ -1,7 +1,6 @@
-
 """
 Project description: a script containing all implemantations of the scientific
-methods to found the absortion coefficient.
+methods to found the absorption coefficient.
 
 Project content:
 - Delany Bazley
@@ -42,14 +41,10 @@ def air_properties(temp, hum, atm):
 
 
 def delany_bazley(freq, fluxRes, airDens, soundSpd):
-    # Characteristic Impedance of the Material (Zc)
-    # Zc = Zo ( R + jX )
     R = 1 + 9.08 * ((1e3 * freq / fluxRes) ** -0.75)
     X = -11.9 * ((1e3 * freq / fluxRes) ** -0.73)
     Zc = soundSpd * airDens * (R + 1j * X)
 
-    # Complex wave number (kc)
-    # kc = k0 ( Alpha + jBeta )
     alpha = 1 + 10.8 * (1e3 * freq / fluxRes) ** -0.7
     beta = -10.3 * (1e3 * freq / fluxRes) ** -0.59
     kc = (2 * np.pi * freq / soundSpd) * (alpha + 1j * beta)
@@ -124,7 +119,7 @@ def biot_allard_absorption(Zc, kc, d, cImpAir, poros):
 
 
 def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, visc, term, neta):
-    omega = 2 * np.pi * freq  # Angular Frequency
+    omega = 2 * np.pi * freq 
 
     # RhoE
     alpha = (1 - 1j * (4 * airDens * (tort**2) * neta * omega) /
