@@ -3,7 +3,7 @@ Project description: a script containing all implemantations of the scientific
 methods to found the absorption coefficient.
 
 Project content:
-- Delany Bazley
+- Delany Bazley (Original, Miki variation and Allard-Champoux Variation)
 - Biot Allard
 - Johnson-Champoux
 - Rayleigh
@@ -40,14 +40,33 @@ def air_properties(temp, hum, atm):
     return soundSpd, airDens, characImpAir, viscos, expans, Prandtl, pressConst
 
 
-def delany_bazley(freq, fluxRes, airDens, soundSpd):
-    R = 1 + 9.08 * ((1e3 * freq / fluxRes) ** -0.75)
-    X = -11.9 * ((1e3 * freq / fluxRes) ** -0.73)
-    Zc = soundSpd * airDens * (R + 1j * X)
+def delany_bazley(freq, fluxRes, airDens, soundSpd, var=0):
+    if var == 0:  # Original Delany Bazley
+        R = 1 + 9.08 * ((1e3 * freq / fluxRes) ** -0.75)
+        X = -11.9 * ((1e3 * freq / fluxRes) ** -0.73)
+        Zc = soundSpd * airDens * (R + 1j * X)
 
-    alpha = 1 + 10.8 * (1e3 * freq / fluxRes) ** -0.7
-    beta = -10.3 * (1e3 * freq / fluxRes) ** -0.59
-    kc = (2 * np.pi * freq / soundSpd) * (alpha + 1j * beta)
+        alpha = 1 + 10.8 * (1e3 * freq / fluxRes) ** -0.7
+        beta = -10.3 * (1e3 * freq / fluxRes) ** -0.59
+        kc = (2 * np.pi * freq / soundSpd) * (alpha + 1j * beta)
+
+    elif var == 1:  # Miki variation
+        R = 1 + 5.50 * ((1e3 * freq / fluxRes) ** -0.632)
+        X = -8.43 * ((1e3 * freq / fluxRes) ** -0.632)
+        Zc = soundSpd * airDens * (R + 1j * X)
+
+        alpha = 1 + 7.81 * (1e3 * freq / fluxRes) ** -0.618
+        beta = -11.41 * (1e3 * freq / fluxRes) ** -0.618
+        kc = (2 * np.pi * freq / soundSpd) * (alpha + 1j * beta)
+
+    elif var == 2:  # Allard and Champoux variation
+        R = 1 + 0.0571 * (((airDens*freq) / fluxRes) ** -0.754)
+        X = -0.0870 * (((airDens*freq) / fluxRes) ** -0.732)
+        Zc = soundSpd * airDens * (R + 1j * X)
+
+        alpha = 1 + 0.0978 * ((airDens*freq) / fluxRes) ** -0.7
+        beta = -0.1890 * ((airDens*freq) / fluxRes) ** -0.595
+        kc = (2 * np.pi * freq / soundSpd) * (alpha + 1j * beta)
 
     return Zc, kc
 
@@ -119,7 +138,7 @@ def biot_allard_absorption(Zc, kc, d, cImpAir, poros):
 
 
 def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, visc, term, neta):
-    omega = 2 * np.pi * freq 
+    omega = 2 * np.pi * freq
 
     # RhoE
     alpha = (1 - 1j * (4 * airDens * (tort**2) * neta * omega) /
