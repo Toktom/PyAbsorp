@@ -56,12 +56,12 @@ def delany_bazley(freq, fluxRes, airDens, soundSpd):
     return Zc, kc
 
 
-def delany_bazley_absortion(Zc, kc, d, cImpAir):
+def delany_bazley_absorption(Zc, kc, d, cImpAir):
     Zs = -1j * (Zc / np.tan(kc * d))
     reflex = (Zs - cImpAir) / (Zs + cImpAir)
-    absortion = 1 - np.abs(reflex) ** 2
+    absorption = 1 - np.abs(reflex) ** 2
 
-    return absortion
+    return absorption
 
 
 def shear_wave(omega, fluxRes, poros, tortus, shape, airDens):
@@ -100,11 +100,11 @@ def biot_allard(freq, fluxRes, airDens, poros, tortus, expans, Prandtl, atm, sha
     return Zc, kc
 
 
-def biot_allard_absortion(Zc, kc, d, cImpAir, poros):
+def biot_allard_absorption(Zc, kc, d, cImpAir, poros):
     Zs = -1j * ((Zc/poros) / np.tan(kc * d))
     reflex = (Zs - cImpAir) / (Zs + cImpAir)
-    absortion = 1 - np.abs(reflex) ** 2
-    return absortion
+    absorption = 1 - np.abs(reflex) ** 2
+    return absorption
 
 
 def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, visc, term, neta):
@@ -131,8 +131,8 @@ def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, 
     return zc, kc
 
 
-def johnson_champoux_absortion(Zc, kc, cImpAir, poros, d):
+def johnson_champoux_absorption(Zc, kc, cImpAir, poros, d):
     Zs = 1j * (Zc / poros) * (1 / np.tan(kc * d))
     reflex = (Zs - cImpAir) / (Zs + cImpAir)
-    absortion = 1 - np.abs(reflex) ** 2
-    return absortion
+    absorption = 1 - np.abs(reflex) ** 2
+    return absorption
