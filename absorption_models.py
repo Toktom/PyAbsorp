@@ -7,6 +7,7 @@ Project content:
 - Delany Bazley
 - Biot Allard
 - Johnson-Champoux
+- Rayleigh
 """
 
 import numpy as np
@@ -61,6 +62,21 @@ def delany_bazley_absorption(Zc, kc, d, cImpAir):
     reflex = (Zs - cImpAir) / (Zs + cImpAir)
     absorption = 1 - np.abs(reflex) ** 2
 
+    return absorption
+
+
+def rayleigh(freq, fluxRes, airDens, soundSpd, poros):
+    omega = 2 * np.pi * freq
+    alpha = (1 - (1j * poros * fluxRes) / (airDens * omega)) ** 0.5
+    kc = (omega/soundSpd) * alpha
+    Zc = ((airDens * soundSpd)/poros) * alpha
+    return Zc, kc
+
+
+def rayleigh_absorption(Zc, kc, d, cImpAir):
+    Zs = -1j * (Zc / np.tan(kc * d))
+    reflex = (Zs - cImpAir) / (Zs + cImpAir)
+    absorption = 1 - np.abs(reflex) ** 2
     return absorption
 
 
