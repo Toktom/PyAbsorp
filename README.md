@@ -1,2 +1,2 @@
-# Absortion Models
- A file containing the implemantions of the absortion coefficients methods
+# Absorption Models
+ A file containing the implemantions of the absorption coefficients methods
