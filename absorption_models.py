@@ -5,7 +5,7 @@ methods to found the absorption coefficient.
 Project content:
 - Delany Bazley (and with Miki variation and Allard-Champoux variation)
 - Biot Allard
-- Johnson-Champoux
+- Johnson-Champoux (and Allard variation)
 - Rayleigh
 """
 
@@ -37,7 +37,7 @@ def air_properties(temp, hum, atm):
         hum / 100 * Pierce / temp  # Air density
     soundSpd = (expans * atm / airDens)**0.5  # Speed of the sound
     characImpAir = soundSpd * airDens  # Characteristic Impedance of the Air
-    return soundSpd, airDens, characImpAir, viscos, expans, Prandtl, pressConst
+    return soundSpd, airDens, characImpAir, viscos, expans, Prandtl, pressConst, thermCond
 
 
 def delany_bazley(freq, fluxRes, airDens, soundSpd, var='default'):
@@ -137,29 +137,49 @@ def biot_allard_absorption(Zc, kc, d, cImpAir, poros):
     return absorption
 
 
-def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, visc, term, neta):
+def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, visc, term, neta, pressConst=0, thermCond=0, var='default'):
     omega = 2 * np.pi * freq
+    if var == 'default':
+        # RhoE
+        alpha = (1 - 1j * (4 * airDens * (tort**2) * neta * omega) /
+                ((fluxRes**2) * (poros**2) * (visc**2)))**(1 / 2)
+        beta = 1 + (1j * (poros * fluxRes) / (airDens * omega * tort)) * alpha
+        rhoE = airDens * tort * beta
 
-    # RhoE
-    alpha = (1 - 1j * (4 * airDens * (tort**2) * neta * omega) /
-             ((fluxRes**2) * (poros**2) * (visc**2)))**(1 / 2)
-    beta = 1 + (1j * (poros * fluxRes) / (airDens * omega * tort)) * alpha
-    rhoE = airDens * tort * beta
+        # kE
+        epsilon = (1 - 1j * ((4 * airDens * Prandtl * (tort**2) * neta * omega) /
+                            ((poros**2) * (fluxRes**2) * (term**2))))**(1 / 2)
+        zeta = (1 + (1j * ((poros * fluxRes) /
+                        (airDens * omega * tort * Prandtl))) * epsilon) ** -1
+        eta = expans - (expans - 1) * zeta
+        kE = (expans * atm) / eta
 
-    # kE
-    epsilon = (1 - 1j * ((4 * airDens * Prandtl * (tort**2) * neta * omega) /
-                         ((poros**2) * (fluxRes**2) * (term**2))))**(1 / 2)
-    zeta = (1 + (1j * ((poros * fluxRes) /
-                       (airDens * omega * tort * Prandtl))) * epsilon) ** -1
-    eta = expans - (expans - 1) * zeta
-    kE = (expans * atm) / eta
+        # kc e zc
+        kc = omega * ((rhoE / kE)**(1 / 2))
+        zc = (kE * rhoE)**(1 / 2)
 
-    # kc e zc
-    kc = omega * ((rhoE / kE)**(1 / 2))
-    zc = (kE * rhoE)**(1 / 2)
+        return zc, kc
 
-    return zc, kc
+    elif var == 'allard':
+        #RhoE
+        alpha = (1 + 1j * (4 * airDens * (tort**2) * neta * omega) /
+                ((fluxRes**2) * (poros**2) * (visc**2)))**(1 / 2)
+        beta = 1 + (1j * (poros * fluxRes) / (airDens * omega * tort)) * alpha
+        rhoE = ((airDens*tort)/poros) * beta
+        
+        #kE
+        epsilon = (1 + 1j * ((airDens * (term**2) * pressConst * omega) /
+                            (16 * thermCond)))**(1 / 2)
+        zeta = (1 - (1j * ((8 * thermCond) /
+                        (airDens * omega * (term**2) * pressConst))) * epsilon) ** -1
+        eta = expans - (expans - 1) * zeta
+        kE = ((expans * atm)/poros) / eta
 
+          # kc e zc
+        kc = omega * ((rhoE / kE)**(1 / 2))
+        zc = (kE * rhoE)**(1 / 2)
+
+        return zc, kc
 
 def johnson_champoux_absorption(Zc, kc, cImpAir, poros, d):
     Zs = 1j * (Zc / poros) * (1 / np.tan(kc * d))
