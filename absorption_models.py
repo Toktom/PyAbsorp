@@ -3,7 +3,7 @@ Project description: a script containing all implemantations of the scientific
 methods to found the absorption coefficient.
 
 Project content:
-- Delany Bazley (Original, Miki variation and Allard-Champoux Variation)
+- Delany Bazley (and with Miki variation and Allard-Champoux variation)
 - Biot Allard
 - Johnson-Champoux
 - Rayleigh
