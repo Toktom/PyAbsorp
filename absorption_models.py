@@ -19,25 +19,25 @@ formats = {"circle": 1,
 
 
 def air_properties(temp, hum, atm):
-    thermCond = 0.026  # W/(mK)
-    temp += 273.16  # K
-    airConst = 287.031  # J/K/kg
-    waterConst = 461.521  # J/K/kg
-    Pierce = 0.0658 * temp**3 - 53.7558 * temp**2 \
+    KAPPA = 0.026  # W/(mK) air
+    AIR_CONST = 287.031  # J/K/kg
+    WATER_CONST = 461.521  # J/K/kg
+    temp += 273.16  # K#
+    pierce = 0.0658 * temp**3 - 53.7558 * temp**2 \
         + 14703.8127 * temp - 1345485.0465
     viscos = 7.72488e-8 * temp - 5.95238e-11 * temp**2 \
         + 2.71368e-14 * temp**3
-    pressConst = 4168.8 * (0.249679 - 7.55179e-5 * temp
-                           + 1.69194e-7 * temp**2 - 6.46128e-11 * temp**3)
+    Cp = 4168.8 * (0.249679 - 7.55179e-5 * temp
+                   + 1.69194e-7 * temp**2 - 6.46128e-11 * temp**3)
     # Volume Specific Heat Constant (J/kg/K) for 260 K < T < 600 K
-    volConst = pressConst - airConst
-    Prandtl = viscos * pressConst / thermCond  # Prandtl number
-    expans = pressConst / volConst  # k
-    airDens = atm / (airConst * temp) - (1 / airConst - 1 / waterConst) * \
-        hum / 100 * Pierce / temp  # Air density
+    vol_Const = Cp - AIR_CONST
+    Prandtl = viscos * Cp / KAPPA  # Prandtl number
+    expans = Cp / vol_Const  # k
+    airDens = atm / (AIR_CONST * temp) - (1 / AIR_CONST - 1 / WATER_CONST) * \
+        hum / 100 * pierce / temp  # Air density
     soundSpd = (expans * atm / airDens)**0.5  # Speed of the sound
     characImpAir = soundSpd * airDens  # Characteristic Impedance of the Air
-    return soundSpd, airDens, characImpAir, viscos, expans, Prandtl, pressConst, thermCond
+    return soundSpd, airDens, characImpAir, viscos, expans, Prandtl, Cp
 
 
 def delany_bazley(freq, fluxRes, airDens, soundSpd, var='default'):
@@ -98,34 +98,35 @@ def shear_wave(omega, fluxRes, poros, tortus, shape, airDens):
     c1 = formats[shape]
     num = 8 * omega * airDens * tortus
     den = fluxRes * poros
-    s = c1 * (num / den)**0.5
+    s = c1 * (num / den) ** 0.5
 
     return s
 
 
-def biot_allard(freq, fluxRes, airDens, poros, tortus, expans, Prandtl, atm, shape):
+def biot_allard(freq, fluxRes, airDens, poros,
+                tortus, expans, Prandtl, atm, shape):
 
     omega = 2 * np.pi * freq
-    B = Prandtl**0.5
+    B = Prandtl ** 0.5
     s = shear_wave(omega, fluxRes, poros, tortus, shape, airDens)
 
     rhoEA = airDens * tortus
     rhoEB = (fluxRes * poros) / (1j * omega * airDens * tortus)
     rhoEC = (s * (-1j) ** 0.5) / 4
-    rhoED = 2 / (s * (-1j)**0.5)
-    rhoEE = ss.jv(1, s * (-1j)**0.5) / ss.jv(0, s * (-1j)**0.5)
+    rhoED = 2 / (s * (-1j) ** 0.5)
+    rhoEE = ss.jv(1, s * (-1j) ** 0.5) / ss.jv(0, s * (-1j) ** 0.5)
 
     rhoE = rhoEA * (1 - rhoEB * ((rhoEC * rhoEE) / (1 - rhoED * rhoEE)))
     kEB = rhoEB / B
     kEC = rhoEC * B
     kED = rhoED / B
-    kEE = ss.jv(1, s * B * (-1j)**0.5) / ss.jv(0, s * B * (-1j)**0.5)
+    kEE = ss.jv(1, s * B * (-1j) ** 0.5) / ss.jv(0, s * B * (-1j) ** 0.5)
 
     kE = (expans * atm) \
         / (expans - (expans - 1) / (1 - kEB * ((kEC * kEE) / (1 - kED * kEE))))
 
-    Zc = (kE * rhoE)**0.5
-    kc = omega * (rhoE / kE)**0.5
+    Zc = (kE * rhoE) ** 0.5
+    kc = omega * (rhoE / kE) ** 0.5
 
     return Zc, kc
 
@@ -137,52 +138,55 @@ def biot_allard_absorption(Zc, kc, d, cImpAir, poros):
     return absorption
 
 
-def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm, visc, term, neta, pressConst=0, thermCond=0, var='default'):
+def johnson_champoux(freq, fluxRes, airDens, poros, tort, expans, Prandtl, atm,
+                     visc, term, neta, Cp=0, var='default'):
+    KAPPA = 0.026  # W/(mK) air
     omega = 2 * np.pi * freq
     if var == 'default':
         # RhoE
-        alpha = (1 - 1j * (4 * airDens * (tort**2) * neta * omega) /
-                ((fluxRes**2) * (poros**2) * (visc**2)))**(1 / 2)
+        alpha = (1 - 1j * (4 * airDens * (tort**2) * neta * omega)
+                 / ((fluxRes**2) * (poros**2) * (visc**2))) ** 0.5
         beta = 1 + (1j * (poros * fluxRes) / (airDens * omega * tort)) * alpha
         rhoE = airDens * tort * beta
 
         # kE
-        epsilon = (1 - 1j * ((4 * airDens * Prandtl * (tort**2) * neta * omega) /
-                            ((poros**2) * (fluxRes**2) * (term**2))))**(1 / 2)
-        zeta = (1 + (1j * ((poros * fluxRes) /
-                        (airDens * omega * tort * Prandtl))) * epsilon) ** -1
+        epsilon = (1 - 1j * ((4 * airDens * Prandtl * (tort**2) * neta * omega)
+                             / ((poros**2) * (fluxRes**2) * (term**2)))) ** 0.5
+        gama = (airDens * omega * tort * Prandtl)
+        zeta = (1 + (1j * ((poros * fluxRes) / gama)) * epsilon) ** -1
         eta = expans - (expans - 1) * zeta
         kE = (expans * atm) / eta
 
         # kc e zc
-        kc = omega * ((rhoE / kE)**(1 / 2))
-        zc = (kE * rhoE)**(1 / 2)
+        kc = omega * ((rhoE / kE) ** 0.5)
+        zc = (kE * rhoE) ** 0.5
 
         return zc, kc
 
     elif var == 'allard':
-        #RhoE
+        # RhoE
         alpha = (1 + 1j * (4 * airDens * (tort**2) * neta * omega) /
-                ((fluxRes**2) * (poros**2) * (visc**2)))**(1 / 2)
+                 ((fluxRes**2) * (poros**2) * (visc**2))) ** 0.5
         beta = 1 + (1j * (poros * fluxRes) / (airDens * omega * tort)) * alpha
         rhoE = ((airDens*tort)/poros) * beta
-        
-        #kE
-        epsilon = (1 + 1j * ((airDens * (term**2) * pressConst * omega) /
-                            (16 * thermCond)))**(1 / 2)
-        zeta = (1 - (1j * ((8 * thermCond) /
-                        (airDens * omega * (term**2) * pressConst))) * epsilon) ** -1
+
+        # kE
+        epsilon = (1 + 1j * ((airDens * (term**2) * Cp * omega) /
+                             (16 *  KAPPA)) ** 0.5
+        gama = (airDens * omega * (term**2) * Cp)
+        zeta = (1 - (1j * ((8 * KAPPA) / gama)) * epsilon) ** -1
         eta = expans - (expans - 1) * zeta
         kE = ((expans * atm)/poros) / eta
 
-          # kc e zc
-        kc = omega * ((rhoE / kE)**(1 / 2))
-        zc = (kE * rhoE)**(1 / 2)
+        # kc e zc
+        kc = omega * ((rhoE / kE) ** 0.5)
+        zc = (kE * rhoE) ** 0.5
 
         return zc, kc
 
-def johnson_champoux_absorption(Zc, kc, cImpAir, poros, d):
-    Zs = 1j * (Zc / poros) * (1 / np.tan(kc * d))
-    reflex = (Zs - cImpAir) / (Zs + cImpAir)
+
+def johnson_champoux_absorption(zc, kc, cImpAir, poros, d):
+    zs = 1j * (zc / poros) * (1 / np.tan(kc * d))
+    reflex = (zs - cImpAir) / (zs + cImpAir)
     absorption = 1 - np.abs(reflex) ** 2
     return absorption
