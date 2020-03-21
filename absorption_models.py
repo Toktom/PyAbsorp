@@ -19,6 +19,35 @@ formats = {"circle": 1,
 
 
 def air_properties(temp, hum, atm):
+    """
+    Returns some of the air properties based on the ambient condition.
+
+    Parameters:
+    -----------
+        temp: int | float
+            Air temperatue
+        hum : int | float
+            Air humidity
+        atm : int | float
+            Atmospheric pressure
+
+    Returns:
+    --------
+        sound_spd: int | float
+            The speed of the sound in the air
+        air_dens: int | float
+            The air density
+        c_imp_air: int | float
+            Characteristic Impedance of the Air
+        viscos: int | float
+            The dynamic vicosity of the air (a.k.a. neta (greek letter))
+        expans: int | float
+            Ratio of specific heat
+        prandtl: int | float
+            Prandtl's number
+        Cp: int | float
+            Specific heat capacity
+    """
     KAPPA = 0.026  # W/(mK) air
     AIR_CONST = 287.031  # J/K/kg
     WATER_CONST = 461.521  # J/K/kg
@@ -41,6 +70,34 @@ def air_properties(temp, hum, atm):
 
 
 def delany_bazley(freq, flow_resis, air_dens, sound_spd, var='default'):
+    """
+    Returns through the Delany-Bazley Model the Material Charactheristic
+    Impedance and the Material Wave Number.
+
+        Parameters:
+        ----------
+            freq : ndarray
+                A range of frequencies
+            flow_resis : int
+                Resistivity of the material
+            air_dens : int | float
+                The air density
+            sound_spd : int | float
+                The speed of the sound
+            var : string
+                The variation of the Delany-Bazley Model
+                Variations availabe:
+                -'default'           -> Delany-Bazley
+                -'miki'              -> Delany-Bazley-Miki
+                -'allard-champoux'   -> Delany-Bazley-Allard-Champoux
+
+        Returns:
+        -------
+            zc : int | float | complex
+                Material Charactheristic Impedance
+            kc : int | float | complex
+                Material Wave Number
+    """
     if var == 'default':  # Original Delany Bazley
         R = 1 + 9.08 * ((1e3 * freq / flow_resis) ** -0.75)
         X = -11.9 * ((1e3 * freq / flow_resis) ** -0.73)
@@ -72,6 +129,26 @@ def delany_bazley(freq, flow_resis, air_dens, sound_spd, var='default'):
 
 
 def delany_bazley_absorption(zc, kc, d, c_imp_air):
+    """
+    Returns the Sound Absorption Coefficient for the Delany-Bazley Model.
+    NOTE: Only use it with the delany_bazley function.
+
+        Parameters:
+        -----------
+            zc : int | float | complex
+                Material Charactheristic Impedance
+            kc : int | float | complex
+                Material Wave Number
+            d : float
+                Material Thickness
+            c_imp_air : int | float
+                Air Characteristic Impedance
+
+        Returns:
+        --------
+            absorption : int | ndarray
+                Sound Absorption Coefficient of the Material
+    """
     zs = -1j * (zc / np.tan(kc * d))
     reflex = (zs - c_imp_air) / (zs + c_imp_air)
     absorption = 1 - np.abs(reflex) ** 2
@@ -139,6 +216,30 @@ def rayleigh_absorption(zc, kc, d, c_imp_air):
 
 
 def shear_wave(omega, flow_resis, poros, tortu, shape, air_dens):
+    """
+    Returns the Shear Wave number.
+
+        Parameters:
+        ----------
+            omega: int | float | complex
+                Angular frequency
+            flow_ resis: int
+                Resistivity of the material
+            poros: float
+                Porosity of the material
+            tortu: float
+                Tortuosity of the material
+            shape: string
+                Form factor for simple pores
+            air_dens: int | float
+                The air density
+
+        Returns:
+        --------
+            s: int | float
+                Shear wave number
+
+    """
     c1 = formats[shape]
     num = 8 * omega * air_dens * tortu
     den = flow_resis * poros
@@ -149,7 +250,38 @@ def shear_wave(omega, flow_resis, poros, tortu, shape, air_dens):
 
 def biot_allard(freq, flow_resis, air_dens, poros,
                 tortu, expans, prandtl, atm, shape):
+    """
+    Returns through the Biot-Allard Model the Material Charactheristic
+    Impedance and the Material Wave Number.
 
+        Parameters:
+        ----------
+            freq : ndarray
+                A range of frequencies
+            flow_resis : int
+                Resistivity of the material
+            air_dens : int | float
+                The air density
+            poros : float
+                Porosity of the material
+            tortu: float
+                Tortuosity of the material
+            expans: int | float
+                Ratio of specific heat
+            prandtl: int | float
+                Prandtl's number
+            atm: int
+                Atmospheric pressure
+            shape: string
+                Form factor for simple pores
+
+        Returns:
+        -------
+            zc : int | float | complex
+                Material Charactheristic Impedance
+            kc : int | float | complex
+                Material Wave Number
+    """
     omega = 2 * np.pi * freq
     B = prandtl ** 0.5
     s = shear_wave(omega, flow_resis, poros, tortu, shape, air_dens)
@@ -176,33 +308,98 @@ def biot_allard(freq, flow_resis, air_dens, poros,
 
 
 def biot_allard_absorption(zc, kc, d, c_imp_air, poros):
+    """
+    Returns the Sound Absorption Coefficient for the Biot-Allard Model.
+    NOTE: Only use it with the biot_allard function.
+
+        Parameters:
+        -----------
+            zc : int | float | complex
+                Material Charactheristic Impedance
+            kc : int | float | complex
+                Material Wave Number
+            d : float
+                Material Thickness
+            c_imp_air : int | float
+                Air Characteristic Impedance
+            poros: float
+                Porosity of the Material
+
+        Returns:
+        --------
+            absorption : int | ndarray
+                Sound Absorption Coefficient of the Material
+    """
     zs = -1j * ((zc/poros) / np.tan(kc * d))
     reflex = (zs - c_imp_air) / (zs + c_imp_air)
     absorption = 1 - np.abs(reflex) ** 2
     return absorption
 
 
-def johnson_champoux(freq, flow_resis, air_dens, poros, tort, expans, prandtl,
+def johnson_champoux(freq, flow_resis, air_dens, poros, tortu, expans, prandtl,
                      atm, visc, term, neta, Cp=0, var='default'):
+    """
+    Returns through the Johnson-Champoux Model the Material Charactheristic
+    Impedance and the Material Wave Number.
 
+        Parameters:
+        ----------
+            freq : ndarray
+                A range of frequencies
+            flow_resis : int
+                Resistivity of the material
+            air_dens : int | float
+                The air density
+            poros : float
+                Porosity of the material
+            tortu: float
+                Tortuosity of the material
+            expans: int | float
+                Ratio of specific heat
+            prandtl: int | float
+                Prandtl's number
+            atm: int
+                Atmospheric pressure
+            visc: int | float
+                Viscous characteristic length
+            term: int | float
+                Thermal characteristic length
+            neta: int | float
+                Dynamic vicosity of air
+            Cp: int | float
+                Specific heat capacity at constant pressure
+                NOTE: Only used int Johnson-Champoux-Allard model.
+            var : string
+                The variation of the Johnson-Champoux Model
+                Variations availabe:
+                -'default'           -> Johnson-Champoux
+                -'allard'            -> Johnson-Champoux-Allard
+
+        Returns:
+        -------
+            zc : int | float | complex
+                Material Charactheristic Impedance
+            kc : int | float | complex
+                Material Wave Number
+    """
     KAPPA = 0.026  # W/(mK) air
     omega = 2 * np.pi * freq
 
     if var == 'default':
 
-        gama = 4 * air_dens * (tort**2) * neta * omega
+        gama = 4 * air_dens * (tortu**2) * neta * omega
 
         # RhoE
         alpha = (1 - 1j * gama
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
-        delta = air_dens * omega * tort
+        delta = air_dens * omega * tortu
         beta = 1 + (1j * (poros * flow_resis) / delta) * alpha
-        rhoE = air_dens * tort * beta
+        rhoE = air_dens * tortu * beta
 
         # kE
         epsilon = (1 - 1j * ((gama * prandtl)
                    / ((poros**2) * (flow_resis**2) * (term**2)))) ** 0.5
-        psi = air_dens * omega * tort * prandtl
+        psi = air_dens * omega * tortu * prandtl
         zeta = (1 + (1j * ((poros * flow_resis) / psi) * epsilon)) ** -1
         eta = expans - (expans - 1) * zeta
         kE = (expans * atm) / eta
@@ -215,11 +412,11 @@ def johnson_champoux(freq, flow_resis, air_dens, poros, tort, expans, prandtl,
 
     elif var == 'allard':
         # RhoE
-        alpha = (1 + 1j * (4 * air_dens * (tort**2) * neta * omega)
+        alpha = (1 + 1j * (4 * air_dens * (tortu**2) * neta * omega)
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
         beta = 1 + (1j * (poros * flow_resis) /
-                    (air_dens * omega * tort)) * alpha
-        rhoE = ((air_dens*tort) / poros) * beta
+                    (air_dens * omega * tortu)) * alpha
+        rhoE = ((air_dens*tortu) / poros) * beta
 
         # kE
         epsilon = (1 + 1j * ((air_dens * (term**2) * Cp * omega)
@@ -236,7 +433,29 @@ def johnson_champoux(freq, flow_resis, air_dens, poros, tort, expans, prandtl,
         return zc, kc
 
 
-def johnson_champoux_absorption(zc, kc, c_imp_air, poros, d):
+def johnson_champoux_absorption(zc, kc, d, c_imp_air, poros):
+    """
+    Returns the Sound Absorption Coefficient for the Johnson-Champoux Model.
+    NOTE: Only use it with the johnson_champoux function.
+
+        Parameters:
+        -----------
+            zc : int | float | complex
+                Material Charactheristic Impedance
+            kc : int | float | complex
+                Material Wave Number
+            d : float
+                Material Thickness
+            c_imp_air : int | float
+                Air Characteristic Impedance
+            poros: float
+                Porosity of the Material
+
+        Returns:
+        --------
+            absorption : int | ndarray
+                Sound Absorption Coefficient of the Material
+    """
     zs = 1j * (zc / poros) * (1 / np.tan(kc * d))
     reflex = (zs - c_imp_air) / (zs + c_imp_air)
     absorption = 1 - np.abs(reflex) ** 2
