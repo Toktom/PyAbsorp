@@ -375,7 +375,6 @@ def johnson_champoux(freq, flow_resis, air_dens, poros, tortu, expans, prandtl,
                 -'default'           -> Johnson-Champoux
                 -'allard'            -> Johnson-Champoux-Allard
                 -'lafarge'           -> Johnson-Champoux-Allard-Lafarge
-                -'pride'             -> Johnson-Champoux-Allard-Pride-Lafarge
 
 
         Returns:
