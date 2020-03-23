@@ -374,6 +374,9 @@ def johnson_champoux(freq, flow_resis, air_dens, poros, tortu, expans, prandtl,
                 Variations availabe:
                 -'default'           -> Johnson-Champoux
                 -'allard'            -> Johnson-Champoux-Allard
+                -'lafarge'           -> Johnson-Champoux-Allard-Lafarge
+                -'pride'             -> Johnson-Champoux-Allard-Pride-Lafarge
+
 
         Returns:
         -------
@@ -383,6 +386,7 @@ def johnson_champoux(freq, flow_resis, air_dens, poros, tortu, expans, prandtl,
                 Material Wave Number
     """
     KAPPA = 0.026  # W/(mK) air
+    STATIC_THERM_PERM = 23e-10  # Static thermal permeability
     omega = 2 * np.pi * freq
 
     if var == 'default':
@@ -423,6 +427,28 @@ def johnson_champoux(freq, flow_resis, air_dens, poros, tortu, expans, prandtl,
                    / (16 * KAPPA))) ** 0.5
         gama = (air_dens * omega * (term**2) * Cp)
         zeta = (1 - (1j * ((8 * KAPPA) / gama)) * epsilon) ** -1
+        eta = expans - (expans - 1) * zeta
+        kE = ((expans * atm)/poros) / eta
+
+        # kc e zc
+        kc = omega * ((rhoE / kE) ** 0.5)
+        zc = (kE * rhoE) ** 0.5
+
+        return zc, kc
+
+    elif var == "lafarge":
+        # RhoE
+        alpha = (1 + 1j * (4 * air_dens * (tortu**2) * neta * omega)
+                 / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
+        beta = 1 + (1j * (poros * flow_resis) /
+                    (air_dens * omega * tortu)) * alpha
+        rhoE = ((air_dens*tortu) / poros) * beta
+
+        # kE
+        psi = 4 * (STATIC_THERM_PERM**2) * Cp * air_dens * omega
+        epsilon = (1 + 1j * ((psi) / (KAPPA * (term**2) * (poros**2)))) ** 0.5
+        gama = (STATIC_THERM_PERM * air_dens * Cp * omega)
+        zeta = (1 - (1j * ((poros * KAPPA) / gama)) * epsilon) ** -1
         eta = expans - (expans - 1) * zeta
         kE = ((expans * atm)/poros) / eta
 
