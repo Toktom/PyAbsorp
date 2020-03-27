@@ -22,17 +22,17 @@ term = 500 * 10e-6  # Thermal characteristic length
 d = 0.05  # Material Thickness
 
 # Johnson-Champoux formulation
-zc, Kc = am.johnson_champoux(freq, flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = am.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
                              Prandtl, atm, visc, term, viscos, var='default')
 absorption0 = am.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
 
 # Johnson-Champoux-Allard formulation
-zc, Kc = am.johnson_champoux(freq, flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = am.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
                              Prandtl, atm, visc, term, viscos, Cp, var='allard')
 absorption1 = am.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
 
 # Johnson-Champoux-Allard-Lafarge formulation
-zc, Kc = am.johnson_champoux(freq, flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = am.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
                              Prandtl, atm, visc, term, viscos, Cp, var='lafarge')
 absorption2 = am.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
 
