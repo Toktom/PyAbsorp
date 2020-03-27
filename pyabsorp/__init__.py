@@ -4,9 +4,9 @@
 @Author: Michael Markus Ackermann
 """
 
-from air import air_properties
+from pyabsorp.air import air_properties
 
-from models import delany_bazley, delany_bazley_absorption, \
+from pyabsorp.models import delany_bazley, delany_bazley_absorption, \
     rayleigh, rayleigh_absorption, biot_allard, biot_allard_absorption, \
     johnson_champoux, johnson_champoux_absorption
 
