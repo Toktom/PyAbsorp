@@ -69,21 +69,23 @@ def air_properties(temp, hum, atm):
     return sound_spd, air_dens, c_imp_air, viscos, expans, prandtl, Cp
 
 
-def delany_bazley(freq, flow_resis, air_dens, sound_spd, var='default'):
+def delany_bazley(flow_resis, air_dens, sound_spd,
+                  freq=np.arange(100, 10001, 1), var='default'):
     """
     Returns through the Delany-Bazley Model the Material Charactheristic
     Impedance and the Material Wave Number.
 
         Parameters:
         ----------
-            freq : ndarray
-                A range of frequencies
             flow_resis : int
                 Resistivity of the material
             air_dens : int | float
                 The air density
             sound_spd : int | float
                 The speed of the sound
+            freq : ndarray
+                A range of frequencies
+                NOTE: default range goes from 100 [Hz] to 10 [kHz].
             var : string
                 The variation of the Delany-Bazley Model
                 Variations availabe:
@@ -156,15 +158,14 @@ def delany_bazley_absorption(zc, kc, d, c_imp_air):
     return absorption
 
 
-def rayleigh(freq, flow_resis, air_dens, sound_spd, poros):
+def rayleigh(flow_resis, air_dens, sound_spd,
+             poros, freq=np.arange(100, 10001, 1)):
     """
     Returns through the Rayleigh Model the Material Charactheristic Impedance
     and the Material Wave Number.
 
         Parameters:
         ----------
-            freq : ndarray
-                A range of frequencies
             flow_resis : int
                 Resistivity of the material
             air_dens : int | float
@@ -173,6 +174,9 @@ def rayleigh(freq, flow_resis, air_dens, sound_spd, poros):
                 The speed of the sound
             poros : float
                 Porosity of the material
+            freq : ndarray
+                A range of frequencies
+                NOTE: default range goes from 100 [Hz] to 10 [kHz].
 
         Returns:
         -------
@@ -248,16 +252,14 @@ def shear_wave(omega, flow_resis, poros, tortu, shape, air_dens):
     return s
 
 
-def biot_allard(freq, flow_resis, air_dens, poros,
-                tortu, expans, prandtl, atm, shape):
+def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
+                atm, shape, freq=np.arange(100, 10001, 1)):
     """
     Returns through the Biot-Allard Model the Material Charactheristic
     Impedance and the Material Wave Number.
 
         Parameters:
         ----------
-            freq : ndarray
-                A range of frequencies
             flow_resis : int
                 Resistivity of the material
             air_dens : int | float
@@ -274,6 +276,9 @@ def biot_allard(freq, flow_resis, air_dens, poros,
                 Atmospheric pressure
             shape: string
                 Form factor for simple pores
+            freq : ndarray
+                A range of frequencies
+                NOTE: default range goes from 100 [Hz] to 10 [kHz].
 
         Returns:
         -------
@@ -336,16 +341,15 @@ def biot_allard_absorption(zc, kc, d, c_imp_air, poros):
     return absorption
 
 
-def johnson_champoux(freq, flow_resis, air_dens, poros, tortu, expans, prandtl,
-                     atm, visc, term, neta, Cp=0, var='default'):
+def johnson_champoux(flow_resis, air_dens, poros, tortu, expans, prandtl, atm,
+                     visc, term, neta, Cp=0,
+                     freq=np.arange(100, 10001, 1), var='default'):
     """
     Returns through the Johnson-Champoux Model the Material Charactheristic
     Impedance and the Material Wave Number.
 
         Parameters:
         ----------
-            freq : ndarray
-                A range of frequencies
             flow_resis : int
                 Resistivity of the material
             air_dens : int | float
@@ -369,6 +373,9 @@ def johnson_champoux(freq, flow_resis, air_dens, poros, tortu, expans, prandtl,
             Cp: int | float
                 Specific heat capacity at constant pressure
                 NOTE: Only used int Johnson-Champoux-Allard model.
+            freq : ndarray
+                A range of frequencies
+                NOTE: default range goes from 100 [Hz] to 10 [kHz].
             var : string
                 The variation of the Johnson-Champoux Model
                 Variations availabe:
