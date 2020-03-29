@@ -1,7 +1,7 @@
 """
-
-=================
-@Author: Michael Markus Ackermann
+Author: Michael Markus Ackermann
+================================
+The function above describes the main purpouse of this file.
 """
 
 

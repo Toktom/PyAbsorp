@@ -1,4 +1,7 @@
 """
+Author: Michael Markus Ackermann
+================================
+
 Models:
 -------
 

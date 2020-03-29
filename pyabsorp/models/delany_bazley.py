@@ -1,7 +1,7 @@
 """
-
-=================
-@Author: Michael Markus Ackermann
+Author: Michael Markus Ackermann
+================================
+Here you will find everything related to the delany-bazley model.
 """
 
 import numpy as np
