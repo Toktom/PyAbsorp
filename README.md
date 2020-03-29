@@ -18,5 +18,13 @@ _Matplotlib is recommended, but not necessary._
 - [ ] Theoretical review of the implemented models.
 - [ ] English review
 
-## Authors
+## How to contribute
+
+For more details, read the [_CONTRIBUTING_](https://github.com/Toktom/PyAbsorp/blob/master/CONTRIBUTING.md) file.
+
+### License
+This project is under **MIT License**.
+Check the license [here](https://github.com/Toktom/PyAbsorp/blob/master/LICENSE).
+
+### Authors
 - [**Michael Markus Ackermann**](https://github.com/Toktom)
