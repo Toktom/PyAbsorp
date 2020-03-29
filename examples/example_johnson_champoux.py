@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-import absorption_models as am  # Must be in the same folder as this file
+import pyabsorp as ab  # Must be in the same folder as this file
 
 # Setting up the variables to calculate the air properties
 temp = 25  # Air temperature
@@ -9,7 +9,7 @@ atm = 101320  # Atmospheric pressure
 
 # Calculate the air properties
 sound_speed, air_dens, c_imp_air, viscos, expans, Prandtl, \
-    Cp = am.air_properties(temp, hum, atm)
+    Cp = ab.air_properties(temp, hum, atm)
 
 # Set's up the frequency range that is desired
 freq = np.arange(100, 10001, 1)
@@ -22,19 +22,19 @@ term = 500 * 10e-6  # Thermal characteristic length
 d = 0.05  # Material Thickness
 
 # Johnson-Champoux formulation
-zc, Kc = am.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
                              Prandtl, atm, visc, term, viscos, var='default')
-absorption0 = am.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
+absorption0 = ab.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
 
 # Johnson-Champoux-Allard formulation
-zc, Kc = am.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
                              Prandtl, atm, visc, term, viscos, Cp, var='allard')
-absorption1 = am.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
+absorption1 = ab.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
 
 # Johnson-Champoux-Allard-Lafarge formulation
-zc, Kc = am.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
                              Prandtl, atm, visc, term, viscos, Cp, var='lafarge')
-absorption2 = am.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
+absorption2 = ab.johnson_champoux_absorption(zc, Kc, d, c_imp_air, poros)
 
 # Putting all together
 absorption = np.empty((absorption0.size, 3), dtype="complex64")
