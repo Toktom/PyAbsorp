@@ -1,3 +1,8 @@
 
+# files
+test.py
 testing.py
+
+# folders
 __pycache__/
+pybsorp/__pycache__/
