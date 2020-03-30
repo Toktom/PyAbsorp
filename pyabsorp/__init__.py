@@ -27,7 +27,7 @@ from pyabsorp.models import delany_bazley, delany_bazley_absorption, \
 
 __author__ = "Michael Markus Ackermann"
 __date__ = "27 March 2020"
-__version__ = "1.0.0"
+__version__ = "0.1.0"
 
 # package submodules and scripts to be called as pyabsorp.something
 __all__ = [  # Functions
