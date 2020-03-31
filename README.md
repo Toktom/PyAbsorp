@@ -11,6 +11,12 @@ _Matplotlib is recommended, but not necessary._
 - **Johnson-Champoux** (with **Allard** and **Lafarge** variation)
 - **Rayleigh**
 
+## How to Install
+1. First make sure that you have the package [*setuptools*](https://pypi.org/project/setuptools/) installed.
+2. Second make sure that you have the latest version of [Numpy](https://pypi.org/project/numpy/) and [Scipy](https://pypi.org/project/scipy/), as mentioned above.
+3. Install through pip, by using the following command:
+    ``` pip install git+https://github.com/Toktom/PyAbsorp ```
+    
 ## Future Objectives
 - [ ] Code validation
 - [ ] Implement Pride variation to the Johnson-Champoux model.
