@@ -3,6 +3,7 @@ PYABSORP
 =====================================================
 Author:
     Michael Markus Ackermann - dev.toktom@outlook.com
+    
 PyAbsorp:
     This is a package developed to be use to find the Sound Absorption
     Coefficient through some implemented models, like  Biot-Allard, 

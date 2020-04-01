@@ -15,7 +15,9 @@ settings = {
     'author': 'Michael Markus Ackermann',
     'author_email': 'michael_ackermann@outlook.com',
     'license': 'MIT',
-    'install_requires': ['numpy', 'scipy'],
+    'install_requires': [
+        'numpy>=1.18.1', 
+        'scipy>=1.4.1'],
     'packages': ['pyabsorp', 'pyabsorp.models']
     }
 
