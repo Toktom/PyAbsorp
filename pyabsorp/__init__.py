@@ -21,14 +21,12 @@ documentation.
 """
 
 from pyabsorp.air import air_properties
+from pyabsorp.version import __author__, __date__, __version__
 
 from pyabsorp.models import delany_bazley, delany_bazley_absorption, \
     rayleigh, rayleigh_absorption, biot_allard, biot_allard_absorption, \
     johnson_champoux, johnson_champoux_absorption
 
-__author__ = "Michael Markus Ackermann"
-__date__ = "27 March 2020"
-__version__ = "0.1.0"
 
 # package submodules and scripts to be called as pyabsorp.something
 __all__ = [  # Functions
