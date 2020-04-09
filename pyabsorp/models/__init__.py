@@ -14,13 +14,13 @@ Models:
     ---------------------
 
         >>> pyabsorp.delany_bazley(flow_resis, air_dens, ..., var='default')
-        >>> pyabsorp.delany_bazley_absorption(zc, kc, d, c_imp_air)
+        >>> pyabsorp.delany_bazley_absorption(zc, kc, d, z_air)
         >>> pyabsorp.rayleigh(flow_resis, air_dens, ..., freq)
-        >>> pyabsorp.rayleigh_absorption(zc, kc, d, c_imp_air)
+        >>> pyabsorp.rayleigh_absorption(zc, kc, d, z_air)
         >>> pyabsorp.biot_allard(flow_resis, air_dens, ..., freq)
-        >>> pyabsorp.biot_allard_absorption(zc, kc, d, c_imp_air)
+        >>> pyabsorp.biot_allard_absorption(zc, kc, d, z_air)
         >>> pyabsorp.johnson_champoux(flow_resis, air_dens, ... var='default')
-        >>> pyabsorp.johnson_champoux_absorption(zc, kc, d, c_imp_air)
+        >>> pyabsorp.johnson_champoux_absorption(zc, kc, d, z_air)
 
 
     For further information, check the function specific documentation.

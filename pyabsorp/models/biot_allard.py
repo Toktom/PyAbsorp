@@ -107,7 +107,7 @@ def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
     return zc, kc
 
 
-def biot_allard_absorption(zc, kc, d, c_imp_air, poros):
+def biot_allard_absorption(zc, kc, d, z_air, poros):
     """
     Returns the Sound Absorption Coefficient for the Biot-Allard Model.
     NOTE: Only use it with the biot_allard function and this function
@@ -121,7 +121,7 @@ def biot_allard_absorption(zc, kc, d, c_imp_air, poros):
                 Material Wave Number
             d : float
                 Material Thickness
-            c_imp_air : int | float
+            z_air : int | float
                 Air Characteristic Impedance
             poros: float
                 Porosity of the Material
@@ -132,6 +132,6 @@ def biot_allard_absorption(zc, kc, d, c_imp_air, poros):
                 Sound Absorption Coefficient of the Material
     """
     zs = -1j * ((zc/poros) / np.tan(kc * d))
-    reflex = (zs - c_imp_air) / (zs + c_imp_air)
+    reflex = (zs - z_air) / (zs + z_air)
     absorption = 1 - np.abs(reflex) ** 2
     return absorption

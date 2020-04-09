@@ -68,7 +68,7 @@ def delany_bazley(flow_resis, air_dens, sound_spd,
     return zc, kc
 
 
-def delany_bazley_absorption(zc, kc, d, c_imp_air):
+def delany_bazley_absorption(zc, kc, d, z_air):
     """
     Returns the Sound Absorption Coefficient for the Delany-Bazley Model.
     NOTE: Only use it with the delany_bazley function and this function
@@ -82,7 +82,7 @@ def delany_bazley_absorption(zc, kc, d, c_imp_air):
                 Material Wave Number
             d : float
                 Material Thickness
-            c_imp_air : int | float
+            z_air : int | float
                 Air Characteristic Impedance
 
         Returns:
@@ -91,7 +91,7 @@ def delany_bazley_absorption(zc, kc, d, c_imp_air):
                 Sound Absorption Coefficient of the Material
     """
     zs = -1j * (zc / np.tan(kc * d))
-    reflex = (zs - c_imp_air) / (zs + c_imp_air)
+    reflex = (zs - z_air) / (zs + z_air)
     absorption = 1 - np.abs(reflex) ** 2
 
     return absorption

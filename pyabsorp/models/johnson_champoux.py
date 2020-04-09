@@ -132,7 +132,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
         return zc, kc
 
 
-def johnson_champoux_absorption(zc, kc, d, c_imp_air, poros):
+def johnson_champoux_absorption(zc, kc, d, z_air, poros):
     """
     Returns the Sound Absorption Coefficient for the Johnson-Champoux Model.
     NOTE: Only use it with the johnson_champoux function and this function
@@ -146,7 +146,7 @@ def johnson_champoux_absorption(zc, kc, d, c_imp_air, poros):
                 Material Wave Number
             d : float
                 Material Thickness
-            c_imp_air : int | float
+            z_air : int | float
                 Air Characteristic Impedance
             poros: float
                 Porosity of the Material
@@ -157,6 +157,6 @@ def johnson_champoux_absorption(zc, kc, d, c_imp_air, poros):
                 Sound Absorption Coefficient of the Material
     """
     zs = 1j * (zc / poros) * (1 / np.tan(kc * d))
-    reflex = (zs - c_imp_air) / (zs + c_imp_air)
+    reflex = (zs - z_air) / (zs + z_air)
     absorption = 1 - np.abs(reflex) ** 2
     return absorption

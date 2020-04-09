@@ -24,7 +24,7 @@ def air_properties(temp, hum, atm):
             The speed of the sound in the air
         air_dens: int | float
             The air density
-        c_imp_air: int | float
+        z_air: int | float
             Characteristic Impedance of the Air
         viscos: int | float
             The dynamic vicosity of the air (a.k.a. neta (greek letter))
@@ -52,5 +52,5 @@ def air_properties(temp, hum, atm):
     air_dens = atm / (AIR_CONST * temp) - (1 / AIR_CONST - 1 / WATER_CONST) * \
         hum / 100 * pierce / temp  # Air density
     sound_spd = (expans * atm / air_dens) ** 0.5  # Speed of the sound
-    c_imp_air = sound_spd * air_dens  # Characteristic Impedance of the Air
-    return sound_spd, air_dens, c_imp_air, viscos, expans, prandtl, Cp
+    z_air = sound_spd * air_dens  # Characteristic Impedance of the Air
+    return sound_spd, air_dens, z_air, viscos, expans, prandtl, Cp
