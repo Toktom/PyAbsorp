@@ -44,7 +44,8 @@ def rayleigh(flow_resis, air_dens, sound_spd,
 def rayleigh_absorption(zc, kc, d, c_imp_air):
     """
     Returns the Sound Absorption Coefficient for the Rayleigh Model.
-    NOTE: Only use it with the rayleigh function.
+    NOTE: Only use it with the rayleigh function and this function
+    only considers the normal incidence angle.
 
         Parameters:
         -----------

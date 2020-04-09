@@ -135,7 +135,8 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
 def johnson_champoux_absorption(zc, kc, d, c_imp_air, poros):
     """
     Returns the Sound Absorption Coefficient for the Johnson-Champoux Model.
-    NOTE: Only use it with the johnson_champoux function.
+    NOTE: Only use it with the johnson_champoux function and this function
+    only considers the normal incidence angle.
 
         Parameters:
         -----------

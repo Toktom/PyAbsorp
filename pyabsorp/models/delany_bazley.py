@@ -71,7 +71,8 @@ def delany_bazley(flow_resis, air_dens, sound_spd,
 def delany_bazley_absorption(zc, kc, d, c_imp_air):
     """
     Returns the Sound Absorption Coefficient for the Delany-Bazley Model.
-    NOTE: Only use it with the delany_bazley function.
+    NOTE: Only use it with the delany_bazley function and this function
+    only considers the normal incidence angle.
 
         Parameters:
         -----------

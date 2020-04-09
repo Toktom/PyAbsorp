@@ -110,7 +110,8 @@ def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
 def biot_allard_absorption(zc, kc, d, c_imp_air, poros):
     """
     Returns the Sound Absorption Coefficient for the Biot-Allard Model.
-    NOTE: Only use it with the biot_allard function.
+    NOTE: Only use it with the biot_allard function and this function
+    only considers the normal incidence angle.
 
         Parameters:
         -----------
