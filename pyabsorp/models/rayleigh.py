@@ -36,6 +36,7 @@ def rayleigh(flow_resis, air_dens, sound_spd,
     """
     omega = 2 * np.pi * freq
     alpha = (1 - (1j * poros * flow_resis) / (air_dens * omega)) ** 0.5
+    # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
     kc = (omega/sound_spd) * alpha
     zc = ((air_dens * sound_spd)/poros) * alpha
     return zc, kc
@@ -63,7 +64,7 @@ def rayleigh_absorption(zc, kc, d, z_air):
             absorption : int | ndarray
                 Sound Absorption Coefficient of the Material
     """
-    zs = -1j * (zc / np.tan(kc * d))
-    reflex = (zs - z_air) / (zs + z_air)
-    absorption = 1 - np.abs(reflex) ** 2
+    zs = -1j * (zc / np.tan(kc * d))  # Surface impedance (zs)
+    vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
+    absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
     return absorption

@@ -101,6 +101,7 @@ def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
     kE = (expans * atm) \
         / (expans - (expans - 1) / (1 - kEB * ((kEC * kEE) / (1 - kED * kEE))))
 
+    # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
     zc = (kE * rhoE) ** 0.5
     kc = omega * (rhoE / kE) ** 0.5
 
@@ -131,7 +132,7 @@ def biot_allard_absorption(zc, kc, d, z_air, poros):
             absorption : int | ndarray
                 Sound Absorption Coefficient of the Material
     """
-    zs = -1j * ((zc/poros) / np.tan(kc * d))
-    reflex = (zs - z_air) / (zs + z_air)
-    absorption = 1 - np.abs(reflex) ** 2
+    zs = -1j * ((zc/poros) / np.tan(kc * d))  # Surface impedance (zs)
+    vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
+    absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
     return absorption

@@ -81,7 +81,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
         eta = expans - (expans - 1) * zeta
         kE = (expans * atm) / eta
 
-        # kc e zc
+        # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
         kc = omega * ((rhoE / kE) ** 0.5)
         zc = (kE * rhoE) ** 0.5
 
@@ -103,7 +103,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
         eta = expans - (expans - 1) * zeta
         kE = ((expans * atm)/poros) / eta
 
-        # kc e zc
+        # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
         kc = omega * ((rhoE / kE) ** 0.5)
         zc = (kE * rhoE) ** 0.5
 
@@ -125,7 +125,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
         eta = expans - (expans - 1) * zeta
         kE = ((expans * atm)/poros) / eta
 
-        # kc e zc
+        # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
         kc = omega * ((rhoE / kE) ** 0.5)
         zc = (kE * rhoE) ** 0.5
 
@@ -156,7 +156,7 @@ def johnson_champoux_absorption(zc, kc, d, z_air, poros):
             absorption : int | ndarray
                 Sound Absorption Coefficient of the Material
     """
-    zs = 1j * (zc / poros) * (1 / np.tan(kc * d))
-    reflex = (zs - z_air) / (zs + z_air)
-    absorption = 1 - np.abs(reflex) ** 2
+    zs = 1j * (zc / poros) * (1 / np.tan(kc * d))  # Surface impedance (zs)
+    vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
+    absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
     return absorption

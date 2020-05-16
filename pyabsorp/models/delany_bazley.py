@@ -41,28 +41,34 @@ def delany_bazley(flow_resis, air_dens, sound_spd,
     if var == 'default':  # Original Delany Bazley
         R = 1 + 9.08 * ((1e3 * freq / flow_resis) ** -0.75)
         X = -11.9 * ((1e3 * freq / flow_resis) ** -0.73)
+        # Material Charactheristic Impedance (zc)
         zc = sound_spd * air_dens * (R + 1j * X)
 
         alpha = 1 + 10.8 * (1e3 * freq / flow_resis) ** -0.7
         beta = -10.3 * (1e3 * freq / flow_resis) ** -0.59
+        # Material Wave Number (kc)
         kc = (2 * np.pi * freq / sound_spd) * (alpha + 1j * beta)
 
     elif var == 'miki':  # Miki variation
         R = 1 + 5.50 * ((1e3 * freq / flow_resis) ** -0.632)
         X = -8.43 * ((1e3 * freq / flow_resis) ** -0.632)
+        # Material Charactheristic Impedance (zc)
         zc = sound_spd * air_dens * (R + 1j * X)
 
         alpha = 1 + 7.81 * (1e3 * freq / flow_resis) ** -0.618
         beta = -11.41 * (1e3 * freq / flow_resis) ** -0.618
+        # Material Wave Number (kc)
         kc = (2 * np.pi * freq / sound_spd) * (alpha + 1j * beta)
 
     elif var == 'allard-champoux':  # Allard and Champoux variation
         R = 1 + 0.0571 * (((air_dens*freq) / flow_resis) ** -0.754)
         X = -0.0870 * (((air_dens*freq) / flow_resis) ** -0.732)
+        # Material Charactheristic Impedance (zc)
         zc = sound_spd * air_dens * (R + 1j * X)
 
         alpha = 1 + 0.0978 * ((air_dens*freq) / flow_resis) ** -0.7
         beta = -0.1890 * ((air_dens*freq) / flow_resis) ** -0.595
+        # Material Wave Number (kc)
         kc = (2 * np.pi * freq / sound_spd) * (alpha + 1j * beta)
 
     return zc, kc
@@ -90,8 +96,7 @@ def delany_bazley_absorption(zc, kc, d, z_air):
             absorption : int | ndarray
                 Sound Absorption Coefficient of the Material
     """
-    zs = -1j * (zc / np.tan(kc * d))
-    reflex = (zs - z_air) / (zs + z_air)
-    absorption = 1 - np.abs(reflex) ** 2
-
+    zs = -1j * (zc / np.tan(kc * d))  # Surface impedance (zs)
+    vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
+    absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
     return absorption

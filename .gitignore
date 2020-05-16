@@ -6,3 +6,4 @@ testing.py
 # folders
 __pycache__/
 pybsorp/__pycache__/
+.vscode/settings.json
