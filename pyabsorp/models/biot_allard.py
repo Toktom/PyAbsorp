@@ -85,23 +85,30 @@ def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
     B = prandtl ** 0.5
     s = shear_wave(omega, flow_resis, poros, tortu, shape, air_dens)
 
-    rhoEA = air_dens * tortu
-    rhoEB = (flow_resis * poros) / (1j * omega * air_dens * tortu)
-    rhoEC = (s * (-1j) ** 0.5) / 4
-    rhoED = 2 / (s * (-1j) ** 0.5)
-    rhoEE = ss.jv(1, s * (-1j) ** 0.5) / ss.jv(0, s * (-1j) ** 0.5)
+    rho_part_a = air_dens * tortu
+    rho_part_b = (flow_resis * poros) / (1j * omega * air_dens * tortu)
+    rho_part_c = (s * (-1j) ** 0.5) / 4
+    rho_part_d = 2 / (s * (-1j) ** 0.5)
+    rho_part_e = ss.jv(1, s * (-1j) ** 0.5) / ss.jv(0, s * (-1j) ** 0.5)
 
-    rhoE = rhoEA * (1 - rhoEB * ((rhoEC * rhoEE) / (1 - rhoED * rhoEE)))
-    kEB = rhoEB / B
-    kEC = rhoEC * B
-    kED = rhoED / B
-    kEE = ss.jv(1, s * B * (-1j) ** 0.5) / ss.jv(0, s * B * (-1j) ** 0.5)
+    rho_ef = rho_part_a * (1 - rho_part_b * ((rho_part_c * rho_part_e) /
+                           (1 - rho_part_d * rho_part_e)))
 
-    kE = (expans * atm) \
-        / (expans - (expans - 1) / (1 - kEB * ((kEC * kEE) / (1 - kED * kEE))))
+    k_part_a = rho_part_b / B
+    k_part_b = rho_part_c * B
+    k_part_c = rho_part_d / B
+    k_part_d = ss.jv(1, s * B * (-1j) ** 0.5) / ss.jv(0, s * B * (-1j) ** 0.5)
+
+    k_ef = (expans * atm) / (expans - (expans - 1) /
+                             (1 - k_part_a * ((k_part_b * k_part_d) /
+                              (1 - k_part_c * k_part_d))))
+
+    # Changing from efficient to equivalent
+    rho_eq = rho_ef / poros
+    k_eq = k_ef / poros
 
     # Charactheristic Impedance (zc) and the Wave Number (kc)
-    zc = (kE * rhoE) ** 0.5
-    kc = omega * (rhoE / kE) ** 0.5
+    zc = (k_eq * rho_eq) ** 0.5
+    kc = omega * (rho_eq / k_eq) ** 0.5
 
     return zc, kc
