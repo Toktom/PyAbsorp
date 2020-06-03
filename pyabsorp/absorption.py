@@ -29,7 +29,7 @@ def absorption_coefficient(zc, kc, d, z_air):
             absorption : int | ndarray
                 Sound Absorption Coefficient of the Material
     """
-    zs = -1j * (zc / np.tan(kc * d)))  # Surface impedance (zs)
+    zs = -1j * (zc / np.tan(kc * d))  # Surface impedance (zs)
     vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
     absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
     return absorption
