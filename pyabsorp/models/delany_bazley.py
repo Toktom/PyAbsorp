@@ -38,6 +38,7 @@ def delany_bazley(flow_resis, air_dens, sound_spd,
             kc : int | float | complex
                 Material Wave Number
     """
+    # BIG NOTE: R stands for REAL part and X for IMAGINARY part
     if var == 'default':  # Original Delany Bazley
         R = 1 + 9.08 * ((1e3 * freq / flow_resis) ** -0.75)
         X = -11.9 * ((1e3 * freq / flow_resis) ** -0.73)
