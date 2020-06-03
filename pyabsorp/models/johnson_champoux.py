@@ -64,24 +64,24 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
 
     if var == 'default':
 
-        gama = 4 * air_dens * (tortu**2) * neta * omega
+        gama = 4 * omega * air_dens * neta * (tortu**2)
 
         # RhoE
         alpha = (1 - 1j * gama
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
         delta = air_dens * omega * tortu
-        beta = 1 + (1j * (poros * flow_resis) / delta) * alpha
+        beta = 1 - (1j * (poros * flow_resis) / delta) * alpha
         rhoE = air_dens * tortu * beta
 
         # kE
-        epsilon = (1 - 1j * ((gama * prandtl)
+        epsilon = (1 + 1j * ((gama * prandtl)
                    / ((poros**2) * (flow_resis**2) * (term**2)))) ** 0.5
         psi = air_dens * omega * tortu * prandtl
-        zeta = (1 + (1j * ((poros * flow_resis) / psi) * epsilon)) ** -1
+        zeta = (1 - (1j * ((poros * flow_resis) / psi) * epsilon)) ** -1
         eta = expans - (expans - 1) * zeta
         kE = (expans * atm) / eta
 
-        # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
+        # Charactheristic Impedance (zc) and the Wave Number (kc)
         kc = omega * ((rhoE / kE) ** 0.5)
         zc = (kE * rhoE) ** 0.5
 
@@ -89,9 +89,9 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
 
     elif var == 'allard':
         # RhoE
-        alpha = (1 + 1j * (4 * air_dens * (tortu**2) * neta * omega)
+        alpha = (1 - 1j * (4 * air_dens * (tortu**2) * neta * omega)
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
-        beta = 1 + (1j * (poros * flow_resis) /
+        beta = 1 - (1j * (poros * flow_resis) /
                     (air_dens * omega * tortu)) * alpha
         rhoE = ((air_dens*tortu) / poros) * beta
 
@@ -103,7 +103,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
         eta = expans - (expans - 1) * zeta
         kE = ((expans * atm)/poros) / eta
 
-        # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
+        # Charactheristic Impedance (zc) and the Wave Number (kc)
         kc = omega * ((rhoE / kE) ** 0.5)
         zc = (kE * rhoE) ** 0.5
 
@@ -111,52 +111,22 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
 
     elif var == "lafarge":
         # RhoE
-        alpha = (1 + 1j * (4 * air_dens * (tortu**2) * neta * omega)
+        alpha = (1 - 1j * (4 * air_dens * (tortu**2) * neta * omega)
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
-        beta = 1 + (1j * (poros * flow_resis) /
+        beta = 1 - (1j * (poros * flow_resis) /
                     (air_dens * omega * tortu)) * alpha
         rhoE = ((air_dens*tortu) / poros) * beta
 
         # kE
         psi = 4 * (STATIC_THERM_PERM**2) * Cp * air_dens * omega
-        epsilon = (1 + 1j * ((psi) / (KAPPA * (term**2) * (poros**2)))) ** 0.5
+        epsilon = (1 - 1j * ((psi) / (KAPPA * (term**2) * (poros**2)))) ** 0.5
         gama = (STATIC_THERM_PERM * air_dens * Cp * omega)
-        zeta = (1 - (1j * ((poros * KAPPA) / gama)) * epsilon) ** -1
+        zeta = (1 + (1j * ((poros * KAPPA) / gama)) * epsilon) ** -1
         eta = expans - (expans - 1) * zeta
         kE = ((expans * atm)/poros) / eta
 
-        # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
+        # Charactheristic Impedance (zc) and the Wave Number (kc)
         kc = omega * ((rhoE / kE) ** 0.5)
         zc = (kE * rhoE) ** 0.5
 
         return zc, kc
-
-
-def johnson_champoux_absorption(zc, kc, d, z_air, poros):
-    """
-    Returns the Sound Absorption Coefficient for the Johnson-Champoux Model.
-    NOTE: Only use it with the johnson_champoux function and this function
-    only considers the normal incidence angle.
-
-        Parameters:
-        -----------
-            zc : int | float | complex
-                Material Charactheristic Impedance
-            kc : int | float | complex
-                Material Wave Number
-            d : float
-                Material Thickness
-            z_air : int | float
-                Air Characteristic Impedance
-            poros: float
-                Porosity of the Material
-
-        Returns:
-        --------
-            absorption : int | ndarray
-                Sound Absorption Coefficient of the Material
-    """
-    zs = 1j * (zc / poros) * (1 / np.tan(kc * d))  # Surface impedance (zs)
-    vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
-    absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
-    return absorption

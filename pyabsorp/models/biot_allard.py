@@ -1,7 +1,6 @@
 """
 Author: Michael Markus Ackermann
 ================================
-
 Here you will find everything related to the biot-allard model.
 """
 
@@ -101,38 +100,8 @@ def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
     kE = (expans * atm) \
         / (expans - (expans - 1) / (1 - kEB * ((kEC * kEE) / (1 - kED * kEE))))
 
-    # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
+    # Charactheristic Impedance (zc) and the Wave Number (kc)
     zc = (kE * rhoE) ** 0.5
     kc = omega * (rhoE / kE) ** 0.5
 
     return zc, kc
-
-
-def biot_allard_absorption(zc, kc, d, z_air, poros):
-    """
-    Returns the Sound Absorption Coefficient for the Biot-Allard Model.
-    NOTE: Only use it with the biot_allard function and this function
-    only considers the normal incidence angle.
-
-        Parameters:
-        -----------
-            zc : int | float | complex
-                Material Charactheristic Impedance
-            kc : int | float | complex
-                Material Wave Number
-            d : float
-                Material Thickness
-            z_air : int | float
-                Air Characteristic Impedance
-            poros: float
-                Porosity of the Material
-
-        Returns:
-        --------
-            absorption : int | ndarray
-                Sound Absorption Coefficient of the Material
-    """
-    zs = -1j * ((zc/poros) / np.tan(kc * d))  # Surface impedance (zs)
-    vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
-    absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
-    return absorption
