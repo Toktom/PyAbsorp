@@ -66,67 +66,79 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
 
         gama = 4 * omega * air_dens * neta * (tortu**2)
 
-        # RhoE
+        # rho_ef
         alpha = (1 - 1j * gama
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
         delta = air_dens * omega * tortu
         beta = 1 - (1j * (poros * flow_resis) / delta) * alpha
-        rhoE = air_dens * tortu * beta
+        rho_ef = air_dens * tortu * beta
 
-        # kE
+        # k_ef
         epsilon = (1 + 1j * ((gama * prandtl)
                    / ((poros**2) * (flow_resis**2) * (term**2)))) ** 0.5
         psi = air_dens * omega * tortu * prandtl
         zeta = (1 - (1j * ((poros * flow_resis) / psi) * epsilon)) ** -1
         eta = expans - (expans - 1) * zeta
-        kE = (expans * atm) / eta
+        k_ef = (expans * atm) / eta
+
+        # Changing from efficient to equivalent
+        rho_eq = rho_ef / poros
+        k_eq = k_ef / poros
 
         # Charactheristic Impedance (zc) and the Wave Number (kc)
-        kc = omega * ((rhoE / kE) ** 0.5)
-        zc = (kE * rhoE) ** 0.5
+        kc = omega * ((rho_eq / k_eq) ** 0.5)
+        zc = (k_eq * rho_eq) ** 0.5
 
         return zc, kc
 
     elif var == 'allard':
-        # RhoE
+        # rho_ef
         alpha = (1 - 1j * (4 * air_dens * (tortu**2) * neta * omega)
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
         beta = 1 - (1j * (poros * flow_resis) /
                     (air_dens * omega * tortu)) * alpha
-        rhoE = ((air_dens*tortu) / poros) * beta
+        rho_ef = ((air_dens*tortu) / poros) * beta
 
-        # kE
+        # k_ef
         epsilon = (1 + 1j * ((air_dens * (term**2) * Cp * omega)
                    / (16 * KAPPA))) ** 0.5
         gama = (air_dens * omega * (term**2) * Cp)
         zeta = (1 - (1j * ((8 * KAPPA) / gama)) * epsilon) ** -1
         eta = expans - (expans - 1) * zeta
-        kE = ((expans * atm)/poros) / eta
+        k_ef = ((expans * atm)/poros) / eta
+
+        # Changing from efficient to equivalent
+        rho_eq = rho_ef / poros
+        k_eq = k_ef / poros
 
         # Charactheristic Impedance (zc) and the Wave Number (kc)
-        kc = omega * ((rhoE / kE) ** 0.5)
-        zc = (kE * rhoE) ** 0.5
+        kc = omega * ((rho_eq / k_eq) ** 0.5)
+        zc = (k_eq * rho_eq) ** 0.5
 
         return zc, kc
 
     elif var == "lafarge":
-        # RhoE
+        # rho_ef
         alpha = (1 - 1j * (4 * air_dens * (tortu**2) * neta * omega)
                  / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
         beta = 1 - (1j * (poros * flow_resis) /
                     (air_dens * omega * tortu)) * alpha
-        rhoE = ((air_dens*tortu) / poros) * beta
+        rho_ef = ((air_dens*tortu) / poros) * beta
 
-        # kE
+        # k_ef
         psi = 4 * (STATIC_THERM_PERM**2) * Cp * air_dens * omega
         epsilon = (1 - 1j * ((psi) / (KAPPA * (term**2) * (poros**2)))) ** 0.5
         gama = (STATIC_THERM_PERM * air_dens * Cp * omega)
         zeta = (1 + (1j * ((poros * KAPPA) / gama)) * epsilon) ** -1
         eta = expans - (expans - 1) * zeta
-        kE = ((expans * atm)/poros) / eta
+        k_ef = ((expans * atm)/poros) / eta
+
+        # Changing from efficient to equivalent
+        rho_eq = rho_ef / poros
+        k_eq = k_ef / poros
 
         # Charactheristic Impedance (zc) and the Wave Number (kc)
-        kc = omega * ((rhoE / kE) ** 0.5)
-        zc = (kE * rhoE) ** 0.5
+        kc = omega * ((rho_eq / k_eq) ** 0.5)
+        zc = (k_eq * rho_eq) ** 0.5
 
         return zc, kc
