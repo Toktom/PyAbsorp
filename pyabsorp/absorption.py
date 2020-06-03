@@ -9,7 +9,8 @@ import numpy as np
 def absorption_coefficient(zc, kc, d, z_air):
     """
     Returns the Sound Absorption Coefficient.
-    NOTE: This function only considers the normal incidence angle.
+    NOTE 1: The values for 'zc' and 'kc' are already divided by the porosity.
+    NOTE 2: This function only considers the normal incidence angle.
 
         Parameters:
         -----------
