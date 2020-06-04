@@ -28,7 +28,7 @@ def air_properties(temp, hum, atm):
             Characteristic Impedance of the Air
         viscos: int | float
             The dynamic vicosity of the air (a.k.a. neta (greek letter))(Ns/m²)
-        expans: int | float
+        gama: int | float
             Specific heat ratio (no units)
         prandtl: int | float
             Prandtl's number (fewly varies at typical air conditions)(no units)
@@ -48,9 +48,9 @@ def air_properties(temp, hum, atm):
     # Constant Pressure Spectfic Heat
     Cv = Cp - AIR_CONST  # Constant Volume Specific Heat (J/kg/K) for 260 K < T < 600 K
     prandtl = viscos * Cp / KAPPA  # Prandtl number
-    expans = Cp / Cv  # Specific heat ratio
+    gama = Cp / Cv  # Specific heat ratio
     air_dens = atm / (AIR_CONST * temp) - (1 / AIR_CONST - 1 / WATER_CONST) * \
         hum / 100 * pierce / temp  # Air density
-    sound_spd = (expans * atm / air_dens) ** 0.5  # Speed of the sound
+    sound_spd = (gama * atm / air_dens) ** 0.5  # Speed of the sound
     z_air = sound_spd * air_dens  # Characteristic Impedance of the Air
-    return sound_spd, air_dens, z_air, viscos, expans, prandtl, Cp
+    return sound_spd, air_dens, z_air, viscos, gama, prandtl, Cp

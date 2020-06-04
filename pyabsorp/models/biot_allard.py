@@ -46,7 +46,7 @@ def shear_wave(omega, flow_resis, poros, tortu, shape, air_dens):
     return s
 
 
-def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
+def biot_allard(flow_resis, air_dens, poros, tortu, gama, prandtl,
                 atm, shape, freq=np.arange(100, 10001, 1)):
     """
     Returns through the Biot-Allard Model the Material Charactheristic
@@ -62,7 +62,7 @@ def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
                 Porosity of the material
             tortu: float
                 Tortuosity of the material
-            expans: int | float
+            gama: int | float
                 Ratio of specific heat
             prandtl: int | float
                 Prandtl's number
@@ -99,9 +99,9 @@ def biot_allard(flow_resis, air_dens, poros, tortu, expans, prandtl,
     k_part_c = rho_part_d / B
     k_part_d = ss.jv(1, s * B * (-1j) ** 0.5) / ss.jv(0, s * B * (-1j) ** 0.5)
 
-    k_ef = (expans * atm) / (expans - (expans - 1) /
-                             (1 - k_part_a * ((k_part_b * k_part_d) /
-                              (1 - k_part_c * k_part_d))))
+    k_ef = (gama * atm) / (gama - (gama - 1) /
+                           (1 - k_part_a * ((k_part_b * k_part_d) /
+                            (1 - k_part_c * k_part_d))))
 
     # Changing from efficient to equivalent
     rho_eq = rho_ef / poros

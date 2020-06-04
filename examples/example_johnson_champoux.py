@@ -8,7 +8,7 @@ hum = 30  # Air humidity
 atm = 101320  # Atmospheric pressure
 
 # Calculate the air properties
-sound_speed, air_dens, z_air, viscos, expans, Prandtl, \
+sound_speed, air_dens, z_air, viscos, gama, Prandtl, \
     Cp = ab.air_properties(temp, hum, atm)
 
 # Set's up the frequency range that is desired
@@ -22,17 +22,17 @@ term = 500 * 10e-6  # Thermal characteristic length
 d = 0.05  # Material Thickness
 
 # Johnson-Champoux formulation
-zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, gama,
                              Prandtl, atm, visc, term, viscos, var='default')
 absorption0 = ab.absorption_coefficient(zc, Kc, d, z_air)
 
 # Johnson-Champoux-Allard formulation
-zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, gama,
                              Prandtl, atm, visc, term, viscos, Cp, var='allard')
 absorption1 = ab.absorption_coefficient(zc, Kc, d, z_air)
 
 # Johnson-Champoux-Allard-Lafarge formulation
-zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, expans,
+zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, gama,
                              Prandtl, atm, visc, term, viscos, Cp, var='lafarge')
 absorption2 = ab.absorption_coefficient(zc, Kc, d, z_air)
 
