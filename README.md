@@ -18,8 +18,7 @@ _Matplotlib is recommended, but not necessary._
     
 ## Future Objectives
 - [ ] Code validation
-- [ ] Implement Pride variation to the Johnson-Champoux model.
-- [ ] Implement models to the perforated plates situation.
+- [ ] Implementation of absorbers models.
 - [ ] Theoretical review of the implemented models.
 - [ ] English review
 
