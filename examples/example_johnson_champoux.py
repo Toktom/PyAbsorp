@@ -17,9 +17,10 @@ freq = np.arange(100, 10001, 1)
 flow_resist = 35000  # Resistivity of the material
 poros = 0.65  # Porosity of the material
 tortu = 1  # Tortuosity of the material
-visc = 500 * 10e-6  # Viscous characteristic length
+visc = 750 * 10e-6  # Viscous characteristic length
 term = 500 * 10e-6  # Thermal characteristic length
 d = 0.05  # Material Thickness
+therm_perm = poros * (term ** 2) / 8  # cylindrical pore
 
 # Johnson-Champoux formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, gama,
@@ -33,7 +34,7 @@ absorption1 = ab.absorption_coefficient(zc, Kc, d, z_air)
 
 # Johnson-Champoux-Allard-Lafarge formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, gama,
-                             Prandtl, atm, visc, term, viscos, Cp, var='lafarge')
+                             Prandtl, atm, visc, term, viscos, therm_perm, Cp, var='lafarge')
 absorption2 = ab.absorption_coefficient(zc, Kc, d, z_air)
 
 # Putting all together
