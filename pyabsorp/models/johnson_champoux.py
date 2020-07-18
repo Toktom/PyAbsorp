@@ -9,7 +9,7 @@ import numpy as np
 
 
 def johnson_champoux(flow_resis, air_dens, poros, tortu, gama,
-                     prandtl, atm, visc, term, neta, therm_perm=0, Cp=0,
+                     prandtl, atm, visc, therm, neta, therm_perm=0, Cp=0,
                      freq=np.arange(100, 10001, 1), var='default'):
     """
     Returns through the Johnson-Champoux Model the Material Charactheristic
@@ -33,7 +33,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, gama,
                 Atmospheric pressure
             visc: int | float
                 Viscous characteristic length
-            term: int | float
+            therm: int | float
                 Thermal characteristic length
             neta: int | float
                 Dynamic vicosity of air
@@ -73,7 +73,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, gama,
         rho_ef = air_dens * tortu * rho_ef_part_e
 
         # k_ef
-        k_ef_part_a = omega * prandtl * air_dens * (term ** 2)
+        k_ef_part_a = omega * prandtl * air_dens * (therm ** 2)
         k_ef_part_b = (1 + 1j * (k_ef_part_a / (16 * neta))) ** 0.5
         k_ef_part_c = (1 - ((1j * 8 * neta)/k_ef_part_a) * k_ef_part_b) ** -1
         k_ef_part_d = gama - (gama - 1) * k_ef_part_c
@@ -100,7 +100,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, gama,
 
         # k_ef
         k_ef_part_a = 4 * air_dens * (tortu**2) * neta * omega
-        k_ef_part_b = (flow_resis**2) * (poros**2) * (term**2)
+        k_ef_part_b = (flow_resis**2) * (poros**2) * (therm**2)
         k_ef_part_c = (1 + 1j * (k_ef_part_a/k_ef_part_b)) ** 0.5
         k_ef_part_d = (flow_resis * poros)/(air_dens * prandtl * tortu * omega)
         k_ef_part_e = (1 - 1j * k_ef_part_d * k_ef_part_c) ** -1
@@ -134,7 +134,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, gama,
 
         # k_ef
         k_ef_part_a = common_part * Cp * (therm_perm ** 2)
-        k_ef_part_b = KAPPA * (term ** 2) * (poros ** 2)
+        k_ef_part_b = KAPPA * (therm ** 2) * (poros ** 2)
         k_ef_part_c = (1 + 1j * (k_ef_part_a / k_ef_part_b)) ** 0.5
         k_ef_part_d = (poros * KAPPA) / (therm_perm * Cp * air_dens * omega)
         k_ef_part_e = (1 - 1j * (k_ef_part_d * k_ef_part_c)) ** -1
