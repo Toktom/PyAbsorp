@@ -8,8 +8,8 @@ Here you will find everything related to the johnson-champoux model.
 import numpy as np
 
 
-def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
-                     prandtl, atm, visc, term, neta, Cp=0,
+def johnson_champoux(flow_resis, air_dens, poros, tortu, gama,
+                     prandtl, atm, visc, term, neta, therm_perm=0, Cp=0,
                      freq=np.arange(100, 10001, 1), var='default'):
     """
     Returns through the Johnson-Champoux Model the Material Charactheristic
@@ -25,7 +25,7 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
                 Porosity of the material
             tortu: float
                 Tortuosity of the material
-            expans: int | float
+            gama: int | float
                 Ratio of specific heat
             prandtl: int | float
                 Prandtl's number
@@ -37,6 +37,8 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
                 Thermal characteristic length
             neta: int | float
                 Dynamic vicosity of air
+            therm_perm: int | float
+                Static thermal permeability
             Cp: int | float
                 Specific heat capacity at constant pressure
                 NOTE: Only used int Johnson-Champoux-Allard model.
@@ -58,28 +60,24 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
             kc : int | float | complex
                 Material Wave Number
     """
-    KAPPA = 0.026  # W/(mK) air
-    STATIC_THERM_PERM = 23e-10  # Static thermal permeability
     omega = 2 * np.pi * freq
 
     if var == 'default':
-
-        gama = 4 * omega * air_dens * neta * (tortu**2)
-
         # rho_ef
-        alpha = (1 - 1j * gama
-                 / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
-        delta = air_dens * omega * tortu
-        beta = 1 - (1j * (poros * flow_resis) / delta) * alpha
-        rho_ef = air_dens * tortu * beta
+        rho_ef_part_a = 4 * omega * air_dens * neta * (tortu**2)
+        rho_ef_part_b = ((flow_resis**2) * (poros**2) * (visc**2))
+        rho_ef_part_c = (1 + 1j * (rho_ef_part_a / rho_ef_part_b)) ** 0.5
+        rho_ef_part_d = 1j * omega * air_dens * tortu
+        rho_ef_part_e = 1 + ((poros*flow_resis)/rho_ef_part_d) * rho_ef_part_c
+
+        rho_ef = air_dens * tortu * rho_ef_part_e
 
         # k_ef
-        epsilon = (1 + 1j * ((gama * prandtl)
-                   / ((poros**2) * (flow_resis**2) * (term**2)))) ** 0.5
-        psi = air_dens * omega * tortu * prandtl
-        zeta = (1 - (1j * ((poros * flow_resis) / psi) * epsilon)) ** -1
-        eta = expans - (expans - 1) * zeta
-        k_ef = (expans * atm) / eta
+        k_ef_part_a = omega * prandtl * air_dens * (term ** 2)
+        k_ef_part_b = (1 + 1j * (k_ef_part_a / (16 * neta))) ** 0.5
+        k_ef_part_c = (1 - ((1j * 8 * neta)/k_ef_part_a) * k_ef_part_b) ** -1
+        k_ef_part_d = gama - (gama - 1) * k_ef_part_c
+        k_ef = (gama * atm) / k_ef_part_d
 
         # Changing from efficient to equivalent
         rho_eq = rho_ef / poros
@@ -93,19 +91,21 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
 
     elif var == 'allard':
         # rho_ef
-        alpha = (1 - 1j * (4 * air_dens * (tortu**2) * neta * omega)
-                 / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
-        beta = 1 - (1j * (poros * flow_resis) /
-                    (air_dens * omega * tortu)) * alpha
-        rho_ef = ((air_dens*tortu) / poros) * beta
+        rho_ef_part_a = 4 * air_dens * (tortu**2) * neta * omega
+        rho_ef_part_b = (flow_resis**2) * (poros**2) * (visc**2)
+        rho_ef_part_c = (1 + 1j * (rho_ef_part_a/rho_ef_part_b)) ** 0.5
+        rho_ef_part_d = (flow_resis * poros) / (1j * air_dens * tortu * omega)
+        rho_ef_part_e = 1 + rho_ef_part_d * rho_ef_part_c
+        rho_ef = (air_dens * tortu) * rho_ef_part_e
 
         # k_ef
-        epsilon = (1 + 1j * ((air_dens * (term**2) * Cp * omega)
-                   / (16 * KAPPA))) ** 0.5
-        gama = (air_dens * omega * (term**2) * Cp)
-        zeta = (1 - (1j * ((8 * KAPPA) / gama)) * epsilon) ** -1
-        eta = expans - (expans - 1) * zeta
-        k_ef = ((expans * atm)/poros) / eta
+        k_ef_part_a = 4 * air_dens * (tortu**2) * neta * omega
+        k_ef_part_b = (flow_resis**2) * (poros**2) * (term**2)
+        k_ef_part_c = (1 + 1j * (k_ef_part_a/k_ef_part_b)) ** 0.5
+        k_ef_part_d = (flow_resis * poros)/(air_dens * prandtl * tortu * omega)
+        k_ef_part_e = (1 - 1j * k_ef_part_d * k_ef_part_c) ** -1
+        k_ef_part_f = gama - (gama - 1) * k_ef_part_e
+        k_ef = (gama * atm) / k_ef_part_f
 
         # Changing from efficient to equivalent
         rho_eq = rho_ef / poros
@@ -118,20 +118,28 @@ def johnson_champoux(flow_resis, air_dens, poros, tortu, expans,
         return zc, kc
 
     elif var == "lafarge":
+        KAPPA = 0.026  # W/(mK) air
+        # Static thermal permeability
+
+        # Common part used to obtain rho_ef and k_ef
+        common_part = 4 * omega * air_dens
+
         # rho_ef
-        alpha = (1 - 1j * (4 * air_dens * (tortu**2) * neta * omega)
-                 / ((flow_resis**2) * (poros**2) * (visc**2))) ** 0.5
-        beta = 1 - (1j * (poros * flow_resis) /
-                    (air_dens * omega * tortu)) * alpha
-        rho_ef = ((air_dens*tortu) / poros) * beta
+        rho_ef_part_a = common_part * neta * (tortu ** 2)
+        rho_ef_part_b = (flow_resis ** 2) * (visc ** 2) * (poros ** 2)
+        rho_ef_part_c = (1 + 1j * (rho_ef_part_a/rho_ef_part_b)) ** 0.5
+        rho_ef_part_d = (flow_resis * poros) / (1j*omega*air_dens*tortu)
+        rho_ef_part_e = 1 + (rho_ef_part_d * rho_ef_part_c)
+        rho_ef = (air_dens * tortu) * rho_ef_part_e
 
         # k_ef
-        psi = 4 * (STATIC_THERM_PERM**2) * Cp * air_dens * omega
-        epsilon = (1 - 1j * ((psi) / (KAPPA * (term**2) * (poros**2)))) ** 0.5
-        gama = (STATIC_THERM_PERM * air_dens * Cp * omega)
-        zeta = (1 + (1j * ((poros * KAPPA) / gama)) * epsilon) ** -1
-        eta = expans - (expans - 1) * zeta
-        k_ef = ((expans * atm)/poros) / eta
+        k_ef_part_a = common_part * Cp * (therm_perm ** 2)
+        k_ef_part_b = KAPPA * (term ** 2) * (poros ** 2)
+        k_ef_part_c = (1 + 1j * (k_ef_part_a / k_ef_part_b)) ** 0.5
+        k_ef_part_d = (poros * KAPPA) / (therm_perm * Cp * air_dens * omega)
+        k_ef_part_e = (1 - 1j * (k_ef_part_d * k_ef_part_c)) ** -1
+        k_ef_part_f = gama - (gama - 1) * k_ef_part_e
+        k_ef = (gama * atm) / k_ef_part_f
 
         # Changing from efficient to equivalent
         rho_eq = rho_ef / poros
