@@ -1,6 +1,7 @@
 """
 PYABSORP
-=====================================================
+========
+
 Author:
     Michael Markus Ackermann - dev.toktom@outlook.com
 PyAbsorp:

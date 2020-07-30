@@ -6,7 +6,7 @@ Using AirProperties and Material classes within same Johnson-Champoux example co
 
 Created on Thu Jul 30 00:55:08 2020
 
-@author: joaovitor
+author: João Vitor Gutkoski Paes
 """
 
 import numpy as np
@@ -21,6 +21,8 @@ air = ab.AirProperties(temp = 25,           # Temperature
 
 
 # Using new Material class
+# Most of these values should be acquired from laboratory measurements.
+# Bibliography values are also good for code testing and validation.
 mat = ab.Material(thick = 0.05,                             # Thickness
                   freq = np.arange(100, 10001, 1),          # Frequencies
                   air = air,                                # Air properties

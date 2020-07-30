@@ -6,7 +6,7 @@ the same example of the Johnson-Champoux absorption model.
 
 Created on Thu Jul 30 00:47:12 2020
 
-@author: joaovitor
+author: João Vitor Gutkoski Paes
 """
 
 import numpy as np
