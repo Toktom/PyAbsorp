@@ -19,12 +19,14 @@ For further information, check the specific module, class, method or function
 documentation.
 """
 
-from pyabsorp.air import air_properties
+from pyabsorp.air import air_properties, AirProperties
 from pyabsorp.absorption import absorption_coefficient
 from pyabsorp.version import __author__, __date__, __version__
-from pyabsorp.models import delany_bazley, rayleigh, biot_allard, \
-    johnson_champoux
+from pyabsorp.models import delany_bazley, rayleigh, biot_allard, johnson_champoux
+from pyabsorp.material import Material
 
+# Just to prevent "unused" warnings.
+assert __author__ and __date__ and __version__
 
 # package submodules and scripts to be called as pyabsorp.something
 __all__ = [  # Functions
@@ -33,4 +35,8 @@ __all__ = [  # Functions
             'delany_bazley',
             'rayleigh',
             'biot_allard',
-            'johnson_champoux']
+            'johnson_champoux',
+
+            # Classes
+            'AirProperties',
+            'Material']
