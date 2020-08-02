@@ -54,3 +54,141 @@ def air_properties(temp, hum, atm):
     sound_spd = (gama * atm / air_dens) ** 0.5  # Speed of the sound
     z_air = sound_spd * air_dens  # Characteristic Impedance of the Air
     return sound_spd, air_dens, z_air, viscos, gama, prandtl, Cp
+
+
+class AirProperties(object):
+    """Air acoustical properties object interface."""
+
+    def __init__(self, temp: float or int = 20, hum: float or int = 50,
+                 atm: float or int = 101325):
+        """
+        Air properties for acoustical parameters.
+
+        Parameters
+        ----------
+        temp : float or int, optional
+            Environment temperature, in Celsius degrees [°C]. The default is 20.
+        hum : float or int, optional
+            Relative humidity, as percentage [%]. The default is 50.
+        atm : float or int, optional
+            Atmospheric pressure, in Pascals [Pa]. The default is 101325.
+
+        Returns
+        -------
+        None.
+
+        """
+        self.temperature = temp
+        self.humidity = hum
+        self.atmPressure = atm
+        self.calculate_properties()
+        return
+
+    def calculate_properties(self):
+        """
+        Calculate the air acoustically relevant properties.
+
+        The `AirProperties` basic values, `temperature`, `humidity` and
+        `atmPressure` can be set at will, but this method must be explicitly
+        called to update the properties values.
+
+        Returns
+        -------
+        None.
+
+        """
+        props = air_properties(self.temperature, self.humidity, self.atmPressure)
+        self._soundSpeed = props[0]
+        self._density = props[1]
+        self._impedance = props[2]
+        self._viscosity = props[3]
+        self._specHeatRatio = props[4]
+        self._prandtl = props[5]
+        self._specHeatCP = props[6]
+        self._specHeatCV = self.specHeatCP / self.specHeatRatio
+        return
+
+    @property
+    def temperature(self):
+        """Air temperature in degree Celsius [°C]."""
+        return self._temp
+
+    @temperature.setter
+    def temperature(self, temp: float or int):
+        if type(temp) not in [float, int]:
+            raise TypeError("Temperature must be a number.")
+        elif temp < 0 or temp > 50:
+            raise ValueError("Temperature must be between 0 and 50 °C.")
+        self._temp = temp
+        return
+
+    @property
+    def humidity(self):
+        """Air relative humidity in percentage [%]."""
+        return self._hum
+
+    @humidity.setter
+    def humidity(self, hum):
+        if type(hum) not in [float, int]:
+            raise TypeError("Humidity must be a number.")
+        elif hum < 0 or hum > 50:
+            raise ValueError("Humidity must be between 0 and 100 %.")
+        self._hum = hum
+        return
+
+    @property
+    def atmPressure(self):
+        """Atmospherical pressure in Pascals [Pa]."""
+        return self._atm
+
+    @atmPressure.setter
+    def atmPressure(self, atm):
+        if type(atm) not in [float, int]:
+            raise TypeError("Atmospheric pressure must be a number.")
+        elif atm < 90e3 or atm > 115e3:
+            raise ValueError("Atmospheric pressure must be between 90 and 115 kPa.")
+        self._atm = atm
+        return
+
+    @property
+    def soundSpeed(self):
+        """Sound speed in meters per second [m/s]."""
+        return self._soundSpeed
+
+    @property
+    def density(self):
+        """Specific, or volumetric, density in kilograms per cubic meter [kg/m³]."""
+        return self._density
+
+    @property
+    def impedance(self):
+        """Characteristic impedance in rayls per square meter [rayl/m²]."""
+        return self._impedance
+
+    @property
+    def specHeatCP(self):
+        """Specific heat at Constant Pressure [J/kgK]."""
+        return self._specHeatCP
+
+    @property
+    def specHeatCV(self):
+        """Specific heat at Constant Volume [J/kgK]."""
+        return self._specHeatCV
+
+    @property
+    def specHeatRatio(self):
+        """
+        Ratio between specific heat at constant pressure
+        and specific heat at constant volume [-].
+        """
+        return self._specHeatRatio
+
+    @property
+    def viscosity(self):
+        """Dynamic viscosity [Ns/m²]."""
+        return self._viscosity
+
+    @property
+    def prandtl(self):
+        """Prandtl number [-]."""
+        return self._prandtl

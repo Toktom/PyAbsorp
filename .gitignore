@@ -7,3 +7,6 @@ testing.py
 __pycache__/
 pybsorp/__pycache__/
 .vscode/settings.json
+
+# pip install info
+*.egg-info/
