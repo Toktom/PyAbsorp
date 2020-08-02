@@ -32,3 +32,7 @@ Check the license [here](https://github.com/Toktom/PyAbsorp/blob/master/LICENSE)
 
 ### Authors
 - [**Michael Markus Ackermann**](https://github.com/Toktom)
+
+### Contributors
+
+- [**João Vitor Gutkoski Paes**](https://github.com/Chum4k3r)
