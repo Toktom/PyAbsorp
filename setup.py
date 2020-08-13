@@ -9,11 +9,11 @@ from setuptools import setup
 
 settings = {
     'name': 'PyAbsorp',
-    'version': '0.1.1',
+    'version': '0.1.2',
     'description': 'Sound absorption coefficient models implemented in Python.',
     'url': 'https://github.com/Toktom/PyAbsorp',
     'author': 'Michael Markus Ackermann',
-    'author_email': 'michael_ackermann@outlook.com',
+    'author_email': 'dev.toktom@outlook.com',
     'license': 'MIT',
     'install_requires': [
         'numpy>=1.18.1', 
