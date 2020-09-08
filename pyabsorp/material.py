@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Provide basic interface to handle a single material being studied.
@@ -196,16 +195,17 @@ class Material(object):
 
         Parameters
         ----------
+        freqs: np.ndarray
+            Array of frequencies used to estimate `impedance`, `waveNum` and `absorption`
         method : str
-            Names or first letters of desired method.
+            Names or first letters of desired method, e.g. 'rayleigh' for Rayleigh, or 'jc' for Johnson-Champoux.
         var : str, optional
             Name of the method variation, see `johnson_champoux`. The default is 'default'.
 
         Raises
         ------
         ValueError
-            If some of the `method`'s required parameter is None
-            or an unknown `method` is specified.
+            If some of the `method`'s required parameter is None or an unknown `method` is specified.
 
         Returns
         -------
@@ -257,3 +257,4 @@ class Material(object):
         self._absorp = absorption_coefficient(self.impedance, self.waveNum,
                                               self.thickness, self.air.impedance)
         return self.absorption
+        
