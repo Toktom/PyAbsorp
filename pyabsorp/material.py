@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Provide basic interface to handle a single material being studied.
@@ -18,7 +17,7 @@ from pyabsorp.models import delany_bazley, rayleigh, biot_allard, johnson_champo
 class Material(object):
     """Basic material object interface."""
 
-    def __init__(self, thick: float, freq: np.ndarray,
+    def __init__(self, thick: float, #freq: np.ndarray,
                  air: AirProperties, *, poros: float = None,
                  tortus: float = None, flowres: float = None,
                  thermlen: float = None, visclen: float = None,
@@ -71,7 +70,7 @@ class Material(object):
         """
         self._air = air
         self.thickness = thick
-        self.frequencies = np.float32(freq)
+        #self.frequencies = np.float32(freq)
         self.porosity = poros
         self.tortuosity = tortus
         self.flowResistivity = flowres
@@ -79,6 +78,7 @@ class Material(object):
         self.viscousLength = visclen
         self.poreShape = shape
         self.thermalPerm = thermperm
+        self._freqs = None
         self._kc = self._zc = self._absorp = None
         return
 
@@ -156,12 +156,12 @@ class Material(object):
 
     @property
     def frequencies(self):
-        return self._freq
+        return self._freqs
 
-    @frequencies.setter
-    def frequencies(self, freq):
-        self._freq = freq
-        return
+    #@frequencies.setter
+    #def frequencies(self, freq):
+    #    self._freq = freq
+    #    return
 
     @property
     def air(self):
@@ -179,7 +179,7 @@ class Material(object):
     def absorption(self):
         return self._absorp
 
-    def estimate_absorption(self, method: str, var: str = 'default'):
+    def estimate_absorption(self, freqs: np.ndarray, method: str, var: str = 'default'):
         """
         Estimate material absorption based on `method`.
 
@@ -195,16 +195,17 @@ class Material(object):
 
         Parameters
         ----------
+        freqs: np.ndarray
+            Array of frequencies used to estimate `impedance`, `waveNum` and `absorption`
         method : str
-            Names or first letters of desired method.
+            Names or first letters of desired method, e.g. 'rayleigh' for Rayleigh, or 'jc' for Johnson-Champoux.
         var : str, optional
             Name of the method variation, see `johnson_champoux`. The default is 'default'.
 
         Raises
         ------
         ValueError
-            If some of the `method`'s required parameter is None
-            or an unknown `method` is specified.
+            If some of the `method`'s required parameter is None or an unknown `method` is specified.
 
         Returns
         -------
@@ -216,7 +217,7 @@ class Material(object):
                 raise ValueError("Some material parameters are not defined.")
 
             zc, kc = delany_bazley(self.flowResistivity, self.air.density,
-                                   self.air.soundSpeed, self.frequencies, var)
+                                   self.air.soundSpeed, freqs, var)
 
         elif method.upper() in ['R', 'RAY', 'RAYLEIGH']:
             if not all([self.flowResistivity, self.porosity]):
@@ -224,7 +225,7 @@ class Material(object):
 
             zc, kc = rayleigh(self.flowResistivity, self.air.density,
                               self.air.soundSpeed, self.porosity,
-                              self.frequencies)
+                              freqs)
 
         elif method.upper() in ['BA', 'BIOT-ALLARD']:
             if not all([self.flowResistivity, self.porosity,
@@ -233,7 +234,7 @@ class Material(object):
 
             zc, kc = biot_allard(self.flowResistivity, self.air.density, self.porosity,
                                  self.tortuosity, self.air.specHeatRatio, self.air.prandtl,
-                                 self.air.atmPressure, self.poreShape, self.frequencies)
+                                 self.air.atmPressure, self.poreShape, freqs)
 
         elif method.upper() in ['JC', 'JOHNSON-CHAMPOUX']:
             if not all([self.flowResistivity, self.porosity, self.thermalLength,
@@ -246,12 +247,14 @@ class Material(object):
                                       self.air.atmPressure, self.viscousLength,
                                       self.thermalLength, self.air.viscosity,
                                       0 if not self.thermalPerm else self.thermalPerm,
-                                      self.air.specHeatCP, self.frequencies, var)
+                                      self.air.specHeatCP, freqs, var)
 
         else:
             raise ValueError(f"Unknown method {method}.")
+        self._freqs = freqs
         self._zc = zc
         self._kc = kc
         self._absorp = absorption_coefficient(self.impedance, self.waveNum,
                                               self.thickness, self.air.impedance)
         return self.absorption
+        

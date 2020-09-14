@@ -14,6 +14,10 @@ from matplotlib import pyplot as plt
 import pyabsorp as ab  # Must be in the same folder as this file
 
 
+# Definition of the problem
+freq = np.arange(100, 10001, 1)          # Frequencies
+                  
+
 # Using new AirProperties class
 air = ab.AirProperties(temp = 25,           # Temperature
                        hum = 30,            # Relative humidity
@@ -24,7 +28,6 @@ air = ab.AirProperties(temp = 25,           # Temperature
 # Most of these values should be acquired from laboratory measurements.
 # Bibliography values are also good for code testing and validation.
 mat = ab.Material(thick = 0.05,                             # Thickness
-                  freq = np.arange(100, 10001, 1),          # Frequencies
                   air = air,                                # Air properties
                   flowres = 35000,                          # Static flow resistivity
                   poros = 0.65,                             # Open porosity
@@ -36,7 +39,6 @@ mat = ab.Material(thick = 0.05,                             # Thickness
 
 variations = ['default', 'allard', 'lafarge']
 
-
 legends = ['\u03B1 Johnson-Chmapoux',
            '\u03B1 Johnson-Chmapoux-Allard',
            '\u03B1 Johnson-Chmapoux-Allard-Lafarge']
@@ -44,15 +46,16 @@ legends = ['\u03B1 Johnson-Chmapoux',
 
 plt.title("Sound Absorption Coefficient Chart")
 
-for idx in range(3):
+for label, var in zip(legends, variations):
     # Calculate the absorption for a given variation
-    mat.estimate_absorption(method='jc', var=variations[idx])
+    mat.estimate_absorption(freq, method='jc', var=var)
 
     # Draw the lines
-    plt.semilogx(mat.frequencies, 100*mat.absorption, label=legends[idx])
+    plt.semilogx(mat.frequencies, 100*mat.absorption, label=label)
 
 plt.xlabel('Frequency [Hz]')
 plt.ylabel('Absorption Coefficient [%]')
 plt.legend()
 plt.grid(True, which="both", ls="-")
 plt.show()
+

@@ -61,3 +61,4 @@ plt.ylabel('Absorption Coefficient [%]')
 plt.legend()
 plt.grid(True, which="both", ls="-")
 plt.show()
+
