@@ -1,5 +1,6 @@
 # PyAbsorp
 This is a package developed to be use to find the _Sound Absorption Coefficient_ through some implemented models, like  _Biot-Allard_, _Johnson-Champoux_ and others.
+This project is in the alpha stage.
 
 ## Dependencies
 **PyAbsorp** runs under Linux, Windows and MacOS, a **Python 3.8.2** installation is needed with the latest **Numpy (1.18.1 or higher)** , **Scipy (1.4.1 or higher)**. 
