@@ -1,4 +1,4 @@
-<IMG SRC="https://github.com/Toktom/PyAbsorp/images/PyAbsorp.png" WIDTH=400 ALT="PyAbsorp logo" TITLE="PyAbsorp logo">
+<IMG SRC="https://github.com/Toktom/PyAbsorp/blob/master/images/PyAbsorp.png" WIDTH=400 ALT="PyAbsorp logo" TITLE="PyAbsorp logo">
 
 This is a package developed to be use to find the _Sound Absorption Coefficient_ through some implemented models, like  _Biot-Allard_, _Johnson-Champoux_ and others.
 This project is in the alpha stage.
