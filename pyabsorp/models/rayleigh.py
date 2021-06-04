@@ -3,36 +3,25 @@ Author: Michael Markus Ackermann
 ================================
 Here you will find everything related to the rayleigh model.
 """
-
 import numpy as np
 
 
-def rayleigh(flow_resis, air_dens, sound_spd,
-             poros, freq=np.arange(100, 10001, 1)):
+def rayleigh(flow_resis: float, air_dens: float, sound_spd: float, poros: float,
+             freq=np.arange(100, 10001, 1)):
     """
     Returns through the Rayleigh Model the Material Charactheristic Impedance
     and the Material Wave Number.
 
-        Parameters:
-        ----------
-            flow_resis : int
-                Resistivity of the material
-            air_dens : int | float
-                The air density
-            sound_spd : int | float
-                The speed of the sound
-            poros : float
-                Porosity of the material
-            freq : ndarray
-                A range of frequencies
-                NOTE: default range goes from 100 [Hz] to 10 [kHz].
+    Args:
+        flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
+        air_dens (float): Air density [kg/(m^3)].
+        sound_spd (float): The speed of sound in the air [m/s].
+        poros (float): Material open porosity, between 0 and 1.
+        freq (np.ndarray, optional): Array of frequencies. Defaults to np.arange(100, 10001, 1).
 
-        Returns:
-        -------
-            zc : int | float | complex
-                Material Charactheristic Impedance
-            kc : int | float | complex
-                Material Wave Number
+    Returns:
+        zc (np.ndarray): Material Charactheristic Impedance.
+        kc (np.ndarray): Material Wave Number.
     """
     omega = 2 * np.pi * freq
     alpha = (1 - (1j * poros * flow_resis) / (air_dens * omega)) ** 0.5

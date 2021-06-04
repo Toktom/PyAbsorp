@@ -3,62 +3,40 @@ Author: Michael Markus Ackermann
 ================================
 Here you will find everything related to the johnson-champoux model.
 """
-
-
 import numpy as np
 
 
-def johnson_champoux(flow_resis, air_dens, poros, tortu, gama,
-                     prandtl, atm, visc, therm, neta, therm_perm=0, Cp=0,
-                     freq=np.arange(100, 10001, 1), var='default'):
-    """
-    Returns through the Johnson-Champoux Model the Material Charactheristic
+def johnson_champoux(flow_resis: float, air_dens: float, poros: float, tortu: float,
+                     gama: float, prandtl: float, atm: float, visc: float, therm: float,
+                     neta: float, therm_perm: float = 0, Cp: float = 0,
+                     freq: np.ndarray = np.arange(100, 10001, 1), var: str = 'default'):
+    """Returns through the Johnson-Champoux Model the Material Charactheristic
     Impedance and the Material Wave Number.
 
-        Parameters:
-        ----------
-            flow_resis : int
-                Resistivity of the material
-            air_dens : int | float
-                The air density
-            poros : float
-                Porosity of the material
-            tortu: float
-                Tortuosity of the material
-            gama: int | float
-                Ratio of specific heat
-            prandtl: int | float
-                Prandtl's number
-            atm: int
-                Atmospheric pressure
-            visc: int | float
-                Viscous characteristic length
-            therm: int | float
-                Thermal characteristic length
-            neta: int | float
-                Dynamic vicosity of air
-            therm_perm: int | float
-                Static thermal permeability
-            Cp: int | float
-                Specific heat capacity at constant pressure
-                NOTE: Only used int Johnson-Champoux-Allard model.
-            freq : ndarray
-                A range of frequencies
-                NOTE: default range goes from 100 [Hz] to 10 [kHz].
-            var : string
-                The variation of the Johnson-Champoux Model
-                Variations availabe:
-                -'default'           -> Johnson-Champoux
-                -'allard'            -> Johnson-Champoux-Allard
-                -'lafarge'           -> Johnson-Champoux-Allard-Lafarge
+    Args:
+        flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
+        air_dens (float): Air density [kg/(m^3)].
+        poros (float): Material open porosity, between 0 and 1.
+        tortu (float): Material tortuosity.
+        gama (float): Specific heat ratio [no units].
+        prandtl (float): Prandtl's number [no units].
+        atm (float): Atmospheric pressure [Pa].
+        visc (float): Viscous characteristic length [m].
+        therm (float): Thermal characteristic length [m].
+        neta (float):  The dynamic vicosity of the air (neta (greek letter))[Ns/(m^2)].
+        therm_perm (float, optional): [description]. Defaults to 0.
+        Cp (float, optional): Spectfic Heat Constant Pressure [J/kg*K]. Defaults to 0.
+        freq (np.ndarray, optional): Array of frequencies. Defaults to np.arange(100, 10001, 1).
+        var (str, optional): Model variation. Defaults to 'default'.
+        Model variations availabe:
+            -'default'           -> Johnson-Champoux
+            -'allard'            -> Johnson-Champoux-Allard
+            -'lafarge'           -> Johnson-Champoux-Allard-Lafarge
 
 
-        Returns:
-        -------
-            zc : int | float | complex
-                Material Charactheristic Impedance
-            kc : int | float | complex
-                Material Wave Number
+    Returns:
+        zc (np.ndarray): Material Charactheristic Impedance.
+        kc (np.ndarray): Material Wave Number.
     """
     omega = 2 * np.pi * freq
 

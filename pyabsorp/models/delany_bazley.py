@@ -3,40 +3,30 @@ Author: Michael Markus Ackermann
 ================================
 Here you will find everything related to the delany-bazley model.
 """
-
 import numpy as np
 
 
-def delany_bazley(flow_resis, air_dens, sound_spd,
-                  freq=np.arange(100, 10001, 1), var='default'):
+def delany_bazley(flow_resis: float, air_dens: float, sound_spd: float,
+                  freq: np.ndarray = np.arange(100, 10001, 1), var: str ='default'):
     """
     Returns through the Delany-Bazley Model the Material Charactheristic
     Impedance and the Material Wave Number.
 
-        Parameters:
-        ----------
-            flow_resis : int
-                Resistivity of the material
-            air_dens : int | float
-                The air density
-            sound_spd : int | float
-                The speed of the sound
-            freq : ndarray
-                A range of frequencies
-                NOTE: default range goes from 100 [Hz] to 10 [kHz].
-            var : string
-                The variation of the Delany-Bazley Model
-                Variations availabe:
-                -'default'           -> Delany-Bazley
-                -'miki'              -> Delany-Bazley-Miki
-                -'allard-champoux'   -> Delany-Bazley-Allard-Champoux
+    Args:
+        flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
+        air_dens (float): Air density [kg/(m^3)].
+        sound_spd (float): The speed of sound in the air [m/s].
+        freq (np.ndarray, optional): [description]. Defaults to np.arange(100, 10001, 1).
+        var (str, optional): Model variation. Defaults to 'default'.
+        Model variations availabe:
+            -'default'          -> Original Delany Bazley
+            -'miki'             -> Miki variation
+            -'allard-champoux'  -> Allard and Champoux variation
 
-        Returns:
-        -------
-            zc : int | float | complex
-                Material Charactheristic Impedance
-            kc : int | float | complex
-                Material Wave Number
+
+    Returns:
+        zc (np.ndarray): Material Charactheristic Impedance.
+        kc (np.ndarray): Material Wave Number.
     """
     # BIG NOTE: R stands for REAL part and X for IMAGINARY part
     if var == 'default':  # Original Delany Bazley

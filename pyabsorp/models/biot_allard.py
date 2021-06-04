@@ -3,40 +3,32 @@ Author: Michael Markus Ackermann
 ================================
 Here you will find everything related to the biot-allard model.
 """
-
 import numpy as np
+from typing import List
 from scipy import special as ss
+
 
 formats = {"circle": 1,
            "square": 1.07,
-           "equi-tri": 1.11,
-           "retang": 0.81}
+           "equilateral triangular": 1.11,
+           "retangular": 0.81}
 
 
-def shear_wave(omega, flow_resis, poros, tortu, shape, air_dens):
+def shear_wave(omega: List[float], flow_resis: float, poros: float, tortu: float,
+               shape: str, air_dens: float) -> float:
     """
     Returns the Shear Wave number.
 
-        Parameters:
-        ----------
-            omega: int | float | complex
-                Angular frequency
-            flow_ resis: int
-                Resistivity of the material
-            poros: float
-                Porosity of the material
-            tortu: float
-                Tortuosity of the material
-            shape: string
-                Form factor for simple pores
-            air_dens: int | float
-                The air density
+    Args:
+        omega (List[float]): Array of angular frequencies.
+        flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
+        poros (float): Material open porosity, between 0 and 1.
+        tortu (float): Material tortuosity.
+        shape (str): Form factor for simple pores, must be a 'circle', 'square', 'equilateral triangular' or 'retangular'.
+        air_dens (float): Air density [kg/(m^3)].
 
-        Returns:
-        --------
-            s: int | float
-                Shear wave number
-
+    Returns:
+        float: Shear Wave number.
     """
     c1 = formats[shape]
     num = 8 * omega * air_dens * tortu
@@ -45,41 +37,28 @@ def shear_wave(omega, flow_resis, poros, tortu, shape, air_dens):
 
     return s
 
-
-def biot_allard(flow_resis, air_dens, poros, tortu, gama, prandtl,
-                atm, shape, freq=np.arange(100, 10001, 1)):
+def biot_allard(flow_resis: float, air_dens: float, poros: float, tortu: float,
+                gama: float, prandtl: float, atm: float, shape: str,
+                freq=np.arange(100, 10001, 1)):
     """
     Returns through the Biot-Allard Model the Material Charactheristic
     Impedance and the Material Wave Number.
 
-        Parameters:
-        ----------
-            flow_resis : int
-                Resistivity of the material
-            air_dens : int | float
-                The air density
-            poros : float
-                Porosity of the material
-            tortu: float
-                Tortuosity of the material
-            gama: int | float
-                Ratio of specific heat
-            prandtl: int | float
-                Prandtl's number
-            atm: int
-                Atmospheric pressure
-            shape: string
-                Form factor for simple pores
-            freq : ndarray
-                A range of frequencies
-                NOTE: default range goes from 100 [Hz] to 10 [kHz].
+    Args:
+        flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
+        air_dens (float): Air density [kg/(m^3)].
+        poros (float): Material open porosity, between 0 and 1.
+        tortu (float): Material tortuosity.
+        gama (float): Specific heat ratio [no units].
+        prandtl (float): Prandtl's number.
+        atm (float): Atmospheric pressure [Pa].
+        shape (str) : Form factor for simple pores, must be a 'circle', 'square', 'equilateral triangular' or 'retangular'.
+        freq (np.ndarray, optional): Array of frequencies. Defaults to np.arange(100, 10001, 1).
 
-        Returns:
-        -------
-            zc : int | float | complex
-                Material Charactheristic Impedance
-            kc : int | float | complex
-                Material Wave Number
+
+    Returns:
+        zc (np.ndarray): Material Charactheristic Impedance.
+        kc (np.ndarray): Material Wave Number.
     """
     omega = 2 * np.pi * freq
     B = prandtl ** 0.5
