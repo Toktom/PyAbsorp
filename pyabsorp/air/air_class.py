@@ -3,9 +3,8 @@ Author: Michael Markus Ackermann
 ================================
 Air class.
 """
-from dataclasses import field
+from dataclasses import field, dataclass
 from pyabsorp.air import air_properties
-from pydantic.dataclasses import dataclass
 
 
 @dataclass
@@ -14,7 +13,7 @@ class Air:
         Air properties class used in acoustics.
 
     Args:
-        t (float): Air temperatue (Celsius).
+        temperature (float): Air temperatue (Celsius).
         humidity (float): Air humidity (%).
         atmospheric_pressure (float): Atmospheric pressure (Pa).
         kappa (float, optional): W/(mK) air. Defaults to 0.026.
@@ -48,14 +47,14 @@ class Air:
     def __post_init__(self):
         properties = air_properties(self.temperature, self.humidity, self.atmospheric_pressure,
                                     self.kappa, self.air_constant, self.water_constant)
-        self.c0 = properties[0]
+        self.speed = properties[0]
         self.density = properties[1]
         self.impedance = properties[2]
         self.viscosity = properties[3]
         self.specific_heat_ratio = properties[4]
         self.prandtl = properties[5]
         self.specific_heat_cp = properties[6]
-        return
+
 
     def __repr__(self) -> str:
         r = f'Air(temperature={self.temperature}, humidity={self.humidity}, atmospheric_pressure={self.atmospheric_pressure})'

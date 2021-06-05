@@ -5,10 +5,8 @@ Author: Michael Markus Ackermann
 Functions used to get the air properties.
 """
 from typing import List
-from pydantic import validate_arguments
 
 
-@validate_arguments
 def air_properties(t: float, humidity: float, atmospheric_pressure: float, 
                    kappa: float = 0.026, air_constant: float = 287.031, 
                    water_constant: float = 461.521) -> List[float]:
@@ -46,7 +44,6 @@ def air_properties(t: float, humidity: float, atmospheric_pressure: float,
     return c0, density, impedance, visc, gama, prandtl_number, Cp
 
 
-@validate_arguments
 def ceilsius_to_kelvin(t: float) -> float:
     """Converts the temperature from Ceilsius to Kelvin
 
@@ -60,7 +57,6 @@ def ceilsius_to_kelvin(t: float) -> float:
     return t
 
 
-@validate_arguments
 def viscosity(t: float) -> float:
     """Calculates the dynamic vicosity of the air (neta (greek letter)).
 
@@ -74,7 +70,6 @@ def viscosity(t: float) -> float:
     return viscosity
 
 
-@validate_arguments
 def pierce(t: float) -> float:
     """Calculates Pierce.
 
@@ -88,7 +83,6 @@ def pierce(t: float) -> float:
     return p
 
 
-@validate_arguments
 def specific_heat_constant_pressure(t: float) -> float:
     """Calculates the specific heat constant pressure.
 
@@ -103,7 +97,6 @@ def specific_heat_constant_pressure(t: float) -> float:
     return Cp
 
 
-@validate_arguments
 def specific_heat_constant_volume(Cp: float, AIR_CONST=287.031) -> float:
     """Calculates the specific heat constant volume for 260 K < T < 600 K
 
@@ -118,7 +111,6 @@ def specific_heat_constant_volume(Cp: float, AIR_CONST=287.031) -> float:
     return Cv
 
 
-@validate_arguments
 def prandtl(viscosity: float, Cp: float, KAPPA=0.026) -> float:
     """Calculatres the Prandtl number.
 
@@ -134,7 +126,6 @@ def prandtl(viscosity: float, Cp: float, KAPPA=0.026) -> float:
     return prandtl
 
 
-@validate_arguments
 def specific_heat_ratio(Cp: float, Cv: float) -> float:
     """[summary]
 
@@ -149,7 +140,6 @@ def specific_heat_ratio(Cp: float, Cv: float) -> float:
     return gama
 
 
-@validate_arguments
 def air_density(t: float, humidity: float, atmospheric_pressure: float,
                 pierce: float, AIR_CONST=287.031, WATER_CONST=461.521) -> float:
     """Calculates the air density.
@@ -171,7 +161,6 @@ def air_density(t: float, humidity: float, atmospheric_pressure: float,
     return air_densinty
 
 
-@validate_arguments
 def sound_speed(gama: float, atmospheric_pressure: float, air_density: float) -> float:
     """Calculates the speed of the sound in air.
 
@@ -187,7 +176,6 @@ def sound_speed(gama: float, atmospheric_pressure: float, air_density: float) ->
     return c
 
 
-@validate_arguments
 def air_impedance(sound_speed: float, air_density: float) -> float:
     """Calculates the Characteristic Impedance of the Air.
 

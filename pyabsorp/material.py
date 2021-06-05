@@ -10,14 +10,12 @@ author: João Vitor Gutkoski Paes
 coauthor: Michael Markus Ackermann
 """
 import numpy as np
-from typing import Any
 from dataclasses import field, dataclass
 from pyabsorp.air import Air
 from pyabsorp.absorption import absorption_coefficient
 from pyabsorp.models import delany_bazley, rayleigh, biot_allard, johnson_champoux
 
 
-# Not using pydantic dataclass here, due to errors with complex numbers and objects as types
 @dataclass
 class Material:
     """
@@ -54,7 +52,7 @@ class Material:
         None.
     """
 
-    air: Air = field(default=Air(), metadata=dict(
+    air: Air = field(default=None, metadata=dict(
         title="Air object", description="Pyaborp.Air instance"))
     thickness: float = field(default=None, metadata=dict(
         title="Material thickness", description="Should be in [m]"))
@@ -119,14 +117,14 @@ class Material:
                 raise ValueError("Some material parameters are not defined.")
 
             zc, kc = delany_bazley(self.flow_resistivity, self.air.density,
-                                   self.air.soundSpeed, frequencies, var)
+                                   self.air.speed, frequencies, var)
 
         elif method.upper() in ['R', 'RAY', 'RAYLEIGH']:
             if not all([self.flow_resistivity, self.porosity]):
                 raise ValueError("Some material parameters are not defined.")
 
             zc, kc = rayleigh(self.flow_resistivity, self.air.density,
-                              self.air.soundSpeed, self.porosity,
+                              self.air.speed, self.porosity,
                               frequencies)
 
         elif method.upper() in ['BA', 'BIOT-ALLARD']:

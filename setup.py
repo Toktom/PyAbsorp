@@ -9,7 +9,7 @@ from setuptools import setup
 
 settings = {
     'name': 'PyAbsorp',
-    'version': '0.2.0',
+    'version': '0.2.1',
     'description': 'Sound absorption coefficient models implemented in Python.',
     'url': 'https://github.com/Toktom/PyAbsorp',
     'author': 'Michael Markus Ackermann',
@@ -17,8 +17,7 @@ settings = {
     'license': 'MIT',
     'install_requires': [
         'numpy>=1.20.3', 
-        'scipy>=1.6.3',
-        'pydantic>=1.8.2'],
+        'scipy>=1.6.3'],
     'packages': ['pyabsorp', 'pyabsorp.models', 'pyabsorp.air']
     }
 

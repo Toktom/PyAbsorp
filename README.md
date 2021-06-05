@@ -4,7 +4,7 @@ This is a package developed to be use to find the _Sound Absorption Coefficient_
 This project is in the alpha stage.
 
 ## Dependencies
-**PyAbsorp** runs under Linux, Windows and MacOS, a **Python 3.8.10** installation is needed with the latest **Numpy (1.20.3 or higher)** , **Scipy (1.6.3 or higher)** and **Pydantic (1.8.2 or higher)**.
+**PyAbsorp** runs under Linux, Windows and MacOS, a **Python 3.8.10** installation is needed with the latest **Numpy (1.20.3 or higher)** , **Scipy (1.6.3 or higher)**.
 _Matplotlib is recommended, but not necessary._
 
 ## Implemented Models
