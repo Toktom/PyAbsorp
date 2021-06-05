@@ -15,26 +15,25 @@ import pyabsorp as ab  # Must be in the same folder as this file
 
 
 # Definition of the problem
-freq = np.arange(100, 10001, 1)          # Frequencies
+#freq = np.arange(100, 10001, 1)          # Frequencies
                   
 
 # Using new AirProperties class
-air = ab.AirProperties(temp = 25,           # Temperature
-                       hum = 30,            # Relative humidity
-                       atm = 101320)        # Atmospherical pressure
-
+air = ab.Air(temperature = 25,              # Temperature [°C]
+            humidity = 30,                  # Relative humidity
+            atmospheric_pressure = 101320)  # Atmospherical pressure
 
 # Using new Material class
 # Most of these values should be acquired from laboratory measurements.
 # Bibliography values are also good for code testing and validation.
-mat = ab.Material(thick = 0.05,                             # Thickness
-                  air = air,                                # Air properties
-                  flowres = 35000,                          # Static flow resistivity
-                  poros = 0.65,                             # Open porosity
-                  tortus = 1.,                              # Tortuosity
-                  visclen = 750e-5,                         # Viscous characteristic length
-                  thermlen = 500e-5,                        # Thermal characteristic length
-                  thermperm = ((0.65 / 8) * (500e-5)**2))   # Static thermal permeability
+mat = ab.Material(air = air,                                        # Air properties 
+                  thickness = 0.05,                                 # Thickness
+                  flow_resistivity= 35000,                          # Static flow resistivity
+                  porosity= 0.65,                                   # Open porosity
+                  tortuosity= 1.,                                   # Tortuosity
+                  viscosity_length= 750e-5,                         # Viscous characteristic length
+                  thermal_length= 500e-5,                           # Thermal characteristic length
+                  thermal_permeability= ((0.65 / 8) * (500e-5)**2)) # Static thermal permeability
 
 
 variations = ['default', 'allard', 'lafarge']
@@ -48,7 +47,7 @@ plt.title("Sound Absorption Coefficient Chart")
 
 for label, var in zip(legends, variations):
     # Calculate the absorption for a given variation
-    mat.estimate_absorption(freq, method='jc', var=var)
+    mat.estimate_absorption(mat.frequencies, method='jc', var=var)
 
     # Draw the lines
     plt.semilogx(mat.frequencies, 100*mat.absorption, label=label)
