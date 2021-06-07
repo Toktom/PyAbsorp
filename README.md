@@ -1,10 +1,10 @@
 <IMG SRC="https://github.com/Toktom/PyAbsorp/blob/master/images/PyAbsorp.png" WIDTH=400 ALT="PyAbsorp logo" TITLE="PyAbsorp logo">
 
 This is a package developed to be use to find the _Sound Absorption Coefficient_ through some implemented models, like  _Biot-Allard_, _Johnson-Champoux_ and others.
-This project is in the alpha stage.
+This project is in alpha stage.
 
 ## Dependencies
-**PyAbsorp** runs under Linux, Windows and MacOS, a **Python 3.8.10** installation is needed with the latest **Numpy (1.20.3 or higher)** , **Scipy (1.6.3 or higher)**.
+**PyAbsorp** runs under Linux, Windows and MacOS, a **Python 3.8.10** installation is needed with the latest **Numpy (1.20.3 or higher)**, **Scipy (1.6.3 or higher)**.
 _Matplotlib is recommended, but not necessary._
 
 ## Implemented Models
@@ -19,10 +19,11 @@ _Matplotlib is recommended, but not necessary._
     ``` pip install git+https://github.com/Toktom/PyAbsorp ```
     
 ## Future Objectives
-- [ ] Code validation
+- [ ] More analytic models (Wilson and others).
+- [ ] Code validation.
 - [ ] Implementation of absorbers models.
 - [ ] Theoretical review of the implemented models.
-- [ ] English review
+- [ ] English review.
 
 ## How to contribute
 
