@@ -45,8 +45,9 @@ class Air:
         title="Gas constant for water steam", description="Should be in [J/K/kg]"))
 
     def __post_init__(self):
-        properties = air_properties(self.temperature, self.humidity, self.atmospheric_pressure,
-                                    self.kappa, self.air_constant, self.water_constant)
+        properties = air_properties(self.temperature, self.humidity,
+                                    self.atmospheric_pressure, self.kappa,
+                                    self.air_constant, self.water_constant)
         self.speed = properties[0]
         self.density = properties[1]
         self.impedance = properties[2]
@@ -55,7 +56,7 @@ class Air:
         self.prandtl = properties[5]
         self.specific_heat_cp = properties[6]
 
-
     def __repr__(self) -> str:
-        r = f'Air(temperature={self.temperature}, humidity={self.humidity}, atmospheric_pressure={self.atmospheric_pressure})'
+        r = f'Air(temperature={self.temperature}, humidity={self.humidity},\
+            atmospheric_pressure={self.atmospheric_pressure})'
         return r

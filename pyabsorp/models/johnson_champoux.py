@@ -129,3 +129,5 @@ def johnson_champoux(flow_resis: float, air_dens: float, poros: float, tortu: fl
         zc = (k_eq * rho_eq) ** 0.5
 
         return zc, kc
+
+    return None

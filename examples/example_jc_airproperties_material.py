@@ -30,9 +30,9 @@ mat = ab.Material(air = air,                                        # Air proper
                   flow_resistivity= 35000,                          # Static flow resistivity
                   porosity= 0.65,                                   # Open porosity
                   tortuosity= 1.,                                   # Tortuosity
-                  viscosity_length= 750e-5,                         # Viscous characteristic length
-                  thermal_length= 500e-5,                           # Thermal characteristic length
-                  thermal_permeability= ((0.65 / 8) * (500e-5)**2)) # Static thermal permeability
+                  viscosity_length= 750e-5,                         # Viscous c. length
+                  thermal_length= 500e-5,                           # Thermal c. length
+                  thermal_permeability= ((0.65 / 8) * (500e-5)**2))     # Thermal permeability
 
 
 variations = ['default', 'allard', 'lafarge']
