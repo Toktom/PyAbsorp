@@ -15,8 +15,7 @@ import pyabsorp as ab  # Must be in the same folder as this file
 
 
 # Definition of the problem
-#freq = np.arange(100, 10001, 1)          # Frequencies
-                  
+# freq = np.arange(100, 10001, 1)          # Frequencies
 
 # Using new AirProperties class
 air = ab.Air(temperature = 25,              # Temperature [°C]
@@ -26,7 +25,7 @@ air = ab.Air(temperature = 25,              # Temperature [°C]
 # Using new Material class
 # Most of these values should be acquired from laboratory measurements.
 # Bibliography values are also good for code testing and validation.
-mat = ab.Material(air = air,                                        # Air properties 
+mat = ab.Material(air = air,                                        # Air properties
                   thickness = 0.05,                                 # Thickness
                   flow_resistivity= 35000,                          # Static flow resistivity
                   porosity= 0.65,                                   # Open porosity
@@ -57,4 +56,3 @@ plt.ylabel('Absorption Coefficient [%]')
 plt.legend()
 plt.grid(True, which="both", ls="-")
 plt.show()
-
