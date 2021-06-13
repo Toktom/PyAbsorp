@@ -17,7 +17,7 @@ class Air:
         humidity (float): Air humidity (%).
         atmospheric_pressure (float): Atmospheric pressure (Pa).
         kappa (float, optional): W/(mK) air. Defaults to 0.026.
-        air_constant (float, optional): Gas constant for air (J/K/kg). 
+        air_constant (float, optional): Gas constant for air (J/K/kg).
                                         Defaults to 287.031.
         water_constant (float, optional): Gas constant for water vapor (J/K/kg). 
                                 Defaults to 461.521.

@@ -26,7 +26,8 @@ def johnson_champoux(flow_resis: float, air_dens: float, poros: float, tortu: fl
         neta (float):  The dynamic vicosity of the air (neta (greek letter))[Ns/(m^2)].
         therm_perm (float, optional): [description]. Defaults to 0.
         Cp (float, optional): Spectfic Heat Constant Pressure [J/kg*K]. Defaults to 0.
-        freq (np.ndarray, optional): Array of frequencies. Defaults to np.arange(100, 10001, 1).
+        freq (np.ndarray, optional): Array of frequencies. 
+            Defaults to np.arange(100, 10001, 1).
         var (str, optional): Model variation. Defaults to 'default'.
         Model variations availabe:
             -'default'           -> Johnson-Champoux
@@ -67,7 +68,7 @@ def johnson_champoux(flow_resis: float, air_dens: float, poros: float, tortu: fl
 
         return zc, kc
 
-    elif var == 'allard':
+    if var == 'allard':
         # rho_ef
         rho_ef_part_a = 4 * air_dens * (tortu**2) * neta * omega
         rho_ef_part_b = (flow_resis**2) * (poros**2) * (visc**2)
@@ -95,7 +96,7 @@ def johnson_champoux(flow_resis: float, air_dens: float, poros: float, tortu: fl
 
         return zc, kc
 
-    elif var == "lafarge":
+    if var == "lafarge":
         KAPPA = 0.026  # W/(mK) air
         # Static thermal permeability
 

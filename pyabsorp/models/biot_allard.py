@@ -24,7 +24,8 @@ def shear_wave(omega: List[float], flow_resis: float, poros: float, tortu: float
         flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
         poros (float): Material open porosity, between 0 and 1.
         tortu (float): Material tortuosity.
-        shape (str): Form factor for simple pores, must be a 'circle', 'square', 'equilateral triangular' or 'retangular'.
+        shape (str): Form factor for simple pores, must be a 'circle',
+            'square', 'equilateral triangular' or 'retangular'.
         air_dens (float): Air density [kg/(m^3)].
 
     Returns:
@@ -36,6 +37,7 @@ def shear_wave(omega: List[float], flow_resis: float, poros: float, tortu: float
     s = c1 * (num / den) ** 0.5
 
     return s
+
 
 def biot_allard(flow_resis: float, air_dens: float, poros: float, tortu: float,
                 gama: float, prandtl: float, atm: float, shape: str,
@@ -52,8 +54,10 @@ def biot_allard(flow_resis: float, air_dens: float, poros: float, tortu: float,
         gama (float): Specific heat ratio [no units].
         prandtl (float): Prandtl's number.
         atm (float): Atmospheric pressure [Pa].
-        shape (str) : Form factor for simple pores, must be a 'circle', 'square', 'equilateral triangular' or 'retangular'.
-        freq (np.ndarray, optional): Array of frequencies. Defaults to np.arange(100, 10001, 1).
+        shape (str) : Form factor for simple pores, must be a 'circle',
+            'square', 'equilateral triangular' or 'retangular'.
+        freq (np.ndarray, optional): Array of frequencies. 
+            Defaults to np.arange(100, 10001, 1).
 
 
     Returns:

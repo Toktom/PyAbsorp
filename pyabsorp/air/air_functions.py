@@ -19,14 +19,14 @@ def air_properties(t: float, humidity: float, atmospheric_pressure: float,
         kappa (float, optional): W/(mK) air. Defaults to 0.026.
         air_constant (float, optional): Gas constant for air [J/K/kg]. 
                                         Defaults to 287.031.
-        water_constant (float, optional): Gas constant for water vapor [J/K/kg]. 
+        water_constant (float, optional): Gas constant for water vapor [J/K/kg].
                                 Defaults to 461.521.
 
     Returns:
         c0 (float): The speed of the sound in the air [m/s].
         density (float): The air density [kg/(m^3)].
         impedance (float): Characteristic Impedance of the Air [Rayl].
-        viscosity (float): The dynamic vicosity of the air (neta (greek letter))[Ns/(m^2)].
+        viscosity (float): The dynamic vicosity of the air (neta)[Ns/(m^2)].
         gama (float): Specific heat ratio [no units].
         prandtl_number (float):  Prandtl's number [no units].
         Cp (float): Spectfic Heat Constant Pressure [J/kg*K].
@@ -102,7 +102,8 @@ def specific_heat_constant_volume(Cp: float, AIR_CONST=287.031) -> float:
 
     Args:
         Cp (float):  Spectfic Heat Constant Pressure [J/kg*K].
-        AIR_CONST (float, optional): Gas constant for air [J/K/kg]. Defaults to 287.031.
+        AIR_CONST (float, optional): Gas constant for air [J/K/kg].
+            Defaults to 287.031.
 
     Returns:
         float: Spectfic Heat Constant Volume [J/kg/K].
@@ -150,7 +151,7 @@ def air_density(t: float, humidity: float, atmospheric_pressure: float,
         atmospheric_pressure (float): Atmospheric pressure [Pa].
         pierce (float): Pierce.
         AIR_CONST (float, optional): Gas constant for air [J/K/kg]. Defaults to 287.031.
-        WATER_CONST (float, optional):Gas constant for water vapor [J/K/kg]. 
+        WATER_CONST (float, optional): Gas constant for water vapor [J/K/kg].
                                         Defaults to 461.521.
 
     Returns:

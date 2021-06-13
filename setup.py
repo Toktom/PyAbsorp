@@ -16,9 +16,9 @@ settings = {
     'author_email': 'dev.toktom@outlook.com',
     'license': 'MIT',
     'install_requires': [
-        'numpy>=1.20.3', 
+        'numpy>=1.20.3',
         'scipy>=1.6.3'],
     'packages': ['pyabsorp', 'pyabsorp.models', 'pyabsorp.air']
-    }
+}
 
 setup(**settings)
