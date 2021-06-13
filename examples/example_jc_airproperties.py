@@ -49,7 +49,8 @@ zc, Kc = ab.johnson_champoux(flow_resist, air.density, poros, tortu,
 absorption2 = ab.absorption_coefficient(zc, Kc, d, air.impedance)
 
 # Putting all together
-absorption = np.hstack((absorption0[:, None], absorption1[:, None], absorption2[:, None]))
+absorption = np.hstack(
+    (absorption0[:, None], absorption1[:, None], absorption2[:, None]))
 
 legends = ['\u03B1 Johnson-Chmapoux',
            '\u03B1 Johnson-Chmapoux-Allard',

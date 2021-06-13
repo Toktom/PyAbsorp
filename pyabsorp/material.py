@@ -89,7 +89,8 @@ class Material:
         'frequencies': np.ndarray
     }
 
-    def estimate_absorption(self, frequencies: np.ndarray, method: str, var: str = 'default'):
+    def estimate_absorption(self, frequencies: np.ndarray, method: str,
+                            var: str = 'default'):
         """
         Estimate material absorption based on `method`.
 

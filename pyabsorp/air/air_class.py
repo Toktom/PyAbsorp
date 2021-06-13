@@ -27,7 +27,7 @@ class Air:
 
     """
     temperature: float = field(default=20, metadata=dict(
-        title="Enverioment temperature", description="Should be in Celsius degrees [°C]"))
+        title="Enverioment temperature", description="Should be Celsius degrees [°C]"))
 
     humidity: float = field(default=50, metadata=dict(
         title="Relative humidity", description="Should be in as percentage [%]"))
