@@ -14,9 +14,7 @@ from matplotlib import pyplot as plt
 import pyabsorp as ab  # Must be in the same folder as this file
 
 # Using new Air object
-air = ab.Air(temperature = 25,              # Temperature [°C]
-            humidity = 30,                  # Relative humidity
-            atmospheric_pressure = 101320)  # Atmospherical pressure
+air = ab.Air(temperature=25, humidity=30, atmospheric_pressure=101320)
 
 # Set's up the frequency range that is desired
 freq = np.arange(100, 10001, 1)
@@ -31,21 +29,23 @@ therm_perm = poros * (term ** 2) / 8  # cylindrical pore
 
 # Johnson-Champoux formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air.density, poros, tortu,
-                             air.specific_heat_ratio, air.prandtl, air.atmospheric_pressure,
-                             visc, term, air.viscosity, var='default')
+                             air.specific_heat_ratio, air.prandtl,
+                             air.atmospheric_pressure, visc, term,
+                             air.viscosity, var='default')
 absorption0 = ab.absorption_coefficient(zc, Kc, d, air.impedance)
 
 # Johnson-Champoux-Allard formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air.density, poros, tortu,
-                             air.specific_heat_ratio, air.prandtl, air.atmospheric_pressure,
-                             visc, term, air.viscosity, air.specific_heat_cp, var='allard')
+                             air.specific_heat_ratio, air.prandtl,
+                             air.atmospheric_pressure, visc, term, air.viscosity,
+                             air.specific_heat_cp, var='allard')
 absorption1 = ab.absorption_coefficient(zc, Kc, d, air.impedance)
 
 # Johnson-Champoux-Allard-Lafarge formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air.density, poros, tortu,
-                             air.specific_heat_ratio, air.prandtl, air.atmospheric_pressure,
-                             visc, term, air.viscosity, therm_perm, air.specific_heat_cp,
-                             var='lafarge')
+                             air.specific_heat_ratio, air.prandtl,
+                             air.atmospheric_pressure, visc, term, air.viscosity,
+                             therm_perm, air.specific_heat_cp, var='lafarge')
 absorption2 = ab.absorption_coefficient(zc, Kc, d, air.impedance)
 
 # Putting all together

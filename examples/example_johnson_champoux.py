@@ -34,7 +34,8 @@ absorption1 = ab.absorption_coefficient(zc, Kc, d, z_air)
 
 # Johnson-Champoux-Allard-Lafarge formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air_dens, poros, tortu, gama,
-                             Prandtl, atm, visc, term, viscos, therm_perm, Cp, var='lafarge')
+                             Prandtl, atm, visc, term, viscos, therm_perm, 
+                             Cp, var='lafarge')
 absorption2 = ab.absorption_coefficient(zc, Kc, d, z_air)
 
 # Putting all together

@@ -18,21 +18,14 @@ import pyabsorp as ab  # Must be in the same folder as this file
 # freq = np.arange(100, 10001, 1)          # Frequencies
 
 # Using new AirProperties class
-air = ab.Air(temperature = 25,              # Temperature [°C]
-            humidity = 30,                  # Relative humidity
-            atmospheric_pressure = 101320)  # Atmospherical pressure
+air = ab.Air(temperature = 25, humidity = 30, atmospheric_pressure = 101320)
 
 # Using new Material class
 # Most of these values should be acquired from laboratory measurements.
 # Bibliography values are also good for code testing and validation.
-mat = ab.Material(air = air,                                        # Air properties
-                  thickness = 0.05,                                 # Thickness
-                  flow_resistivity= 35000,                          # Static flow resistivity
-                  porosity= 0.65,                                   # Open porosity
-                  tortuosity= 1.,                                   # Tortuosity
-                  viscosity_length= 750e-5,                         # Viscous c. length
-                  thermal_length= 500e-5,                           # Thermal c. length
-                  thermal_permeability= ((0.65 / 8) * (500e-5)**2))     # Thermal permeability
+mat = ab.Material(air = air, thickness = 0.05, flow_resistivity= 35000, porosity= 0.65,
+                  tortuosity= 1., viscosity_length= 750e-5, thermal_length= 500e-5,
+                  thermal_permeability= ((0.65 / 8) * (500e-5)**2))
 
 
 variations = ['default', 'allard', 'lafarge']
