@@ -56,7 +56,7 @@ def biot_allard(flow_resis: float, air_dens: float, poros: float, tortu: float,
         atm (float): Atmospheric pressure [Pa].
         shape (str) : Form factor for simple pores, must be a 'circle',
             'square', 'equilateral triangular' or 'retangular'.
-        freq (np.ndarray, optional): Array of frequencies. 
+        freq (np.ndarray, optional): Array of frequencies.
             Defaults to np.arange(100, 10001, 1).
 
 

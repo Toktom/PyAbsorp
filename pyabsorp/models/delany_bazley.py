@@ -16,7 +16,7 @@ def delany_bazley(flow_resis: float, air_dens: float, sound_spd: float,
         flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
         air_dens (float): Air density [kg/(m^3)].
         sound_spd (float): The speed of sound in the air [m/s].
-        freq (np.ndarray, optional): [description]. 
+        freq (np.ndarray, optional): [description].
             Defaults to np.arange(100, 10001, 1).
         var (str, optional): Model variation. Defaults to 'default'.
         Model variations availabe:

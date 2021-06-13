@@ -17,9 +17,9 @@ def rayleigh(flow_resis: float, air_dens: float, sound_spd: float, poros: float,
         air_dens (float): Air density [kg/(m^3)].
         sound_spd (float): The speed of sound in the air [m/s].
         poros (float): Material open porosity, between 0 and 1.
-        freq (np.ndarray, optional): Array of frequencies. 
+        freq (np.ndarray, optional): Array of frequencies.
             Defaults to np.arange(100, 10001, 1).
-
+    
     Returns:
         zc (np.ndarray): Material Charactheristic Impedance.
         kc (np.ndarray): Material Wave Number.

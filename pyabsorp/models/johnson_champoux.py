@@ -26,7 +26,7 @@ def johnson_champoux(flow_resis: float, air_dens: float, poros: float, tortu: fl
         neta (float):  The dynamic vicosity of the air (neta (greek letter))[Ns/(m^2)].
         therm_perm (float, optional): [description]. Defaults to 0.
         Cp (float, optional): Spectfic Heat Constant Pressure [J/kg*K]. Defaults to 0.
-        freq (np.ndarray, optional): Array of frequencies. 
+        freq (np.ndarray, optional): Array of frequencies.
             Defaults to np.arange(100, 10001, 1).
         var (str, optional): Model variation. Defaults to 'default'.
         Model variations availabe:

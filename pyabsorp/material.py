@@ -112,8 +112,8 @@ class Material:
                 The default is 'default'.
 
         Raises:
-            ValueError: If some of the `method`'s required parameter is None or an 
-                unknown `method` is specified.
+            ValueError: If some of the `method`'s required parameter is None
+                or an unknown `method` is specified.
 
         Returns:
             None.
@@ -140,8 +140,8 @@ class Material:
                 raise ValueError("Some material parameters are not defined.")
 
             zc, kc = biot_allard(self.flow_resistivity, self.air.density, self.porosity,
-                                 self.tortuosity, self.air.specific_heat_ratio, 
-                                 self.air.prandtl, self.air.atmospheric_pressure, 
+                                 self.tortuosity, self.air.specific_heat_ratio,
+                                 self.air.prandtl, self.air.atmospheric_pressure,
                                  self.shape, frequencies)
 
         elif method.upper() in ['JC', 'JOHNSON-CHAMPOUX']:

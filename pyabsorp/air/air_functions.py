@@ -7,8 +7,8 @@ Functions used to get the air properties.
 from typing import List
 
 
-def air_properties(t: float, humidity: float, atmospheric_pressure: float, 
-                   kappa: float = 0.026, air_constant: float = 287.031, 
+def air_properties(t: float, humidity: float, atmospheric_pressure: float,
+                   kappa: float = 0.026, air_constant: float = 287.031,
                    water_constant: float = 461.521) -> List[float]:
     """Returns some of the air properties based on the ambient condition.
 
@@ -17,7 +17,7 @@ def air_properties(t: float, humidity: float, atmospheric_pressure: float,
         humidity (float): Air humidity [%].
         atmospheric_pressure (float): Atmospheric pressure [Pa].
         kappa (float, optional): W/(mK) air. Defaults to 0.026.
-        air_constant (float, optional): Gas constant for air [J/K/kg]. 
+        air_constant (float, optional): Gas constant for air [J/K/kg].
                                         Defaults to 287.031.
         water_constant (float, optional): Gas constant for water vapor [J/K/kg].
                                 Defaults to 461.521.
