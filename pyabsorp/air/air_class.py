@@ -57,6 +57,5 @@ class Air:
         self.specific_heat_cp = properties[6]
 
     def __repr__(self) -> str:
-        r = f'Air(temperature={self.temperature}, humidity={self.humidity},\
+        return f'Air(temperature={self.temperature}, humidity={self.humidity},\
             atmospheric_pressure={self.atmospheric_pressure})'
-        return r

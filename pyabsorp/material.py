@@ -169,10 +169,9 @@ class Material:
         return self.absorption
 
     def __repr__(self) -> str:
-        representation = f"""Material(\nthickness={self.thickness},
+        return f"""Material(\nthickness={self.thickness},
             \nporosity={self.porosity},\ntortuosity={self.tortuosity}
             \nflow_resistivity={self.flow_resistivity},\nthermal_length={self.thermal_length},
             \nviscosity_length={self.viscosity_length}
             \nthermal_permeability={self.thermal_permeability},\nshape={self.shape},
             \nfrequencies={self.frequencies})"""
-        return representation

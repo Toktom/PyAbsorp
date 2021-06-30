@@ -28,6 +28,7 @@ from pyabsorp.air import air_properties, air_impedance, air_density, \
     specific_heat_constant_pressure, specific_heat_constant_volume,\
     specific_heat_ratio, sound_speed, ceilsius_to_kelvin, pierce, \
     prandtl, viscosity, Air
+from pyabsorp.utils import load_object_with_pickle, save_object_with_pickle
 
 # Just to prevent "unused" warnings.
 assert __author__ and __date__ and __version__
@@ -51,6 +52,8 @@ __all__ = [
     'pierce',
     'prandtl',
     'viscosity',
+    'load_object_with_pickle',
+    'save_object_with_pickle',
     # Classes
     'Material',
     'Air']

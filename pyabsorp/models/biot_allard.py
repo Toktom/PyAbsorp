@@ -34,9 +34,7 @@ def shear_wave(omega: List[float], flow_resis: float, poros: float, tortu: float
     c1 = formats[shape]
     num = 8 * omega * air_dens * tortu
     den = flow_resis * poros
-    s = c1 * (num / den) ** 0.5
-
-    return s
+    return c1 * (num / den) ** 0.5
 
 
 def biot_allard(flow_resis: float, air_dens: float, poros: float, tortu: float,

@@ -25,5 +25,4 @@ def absorption_coefficient(zc: List[complex], kc: List[complex], thickness: floa
     """
     zs = -1j * (zc / np.tan(kc * thickness))  # Surface impedance (zs)
     vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)
-    absorption = 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient
-    return absorption
+    return 1 - np.abs(vp) ** 2  # Sound Absorption Coefficient

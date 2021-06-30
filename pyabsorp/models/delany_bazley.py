@@ -30,7 +30,7 @@ def delany_bazley(flow_resis: float, air_dens: float, sound_spd: float,
         kc (np.ndarray): Material Wave Number.
     """
     # BIG NOTE: R stands for REAL part and X for IMAGINARY part
-    if var == 'default':  # Original Delany Bazley
+    if var == 'default':
         R = 1 + 9.08 * ((1e3 * freq / flow_resis) ** -0.75)
         X = -11.9 * ((1e3 * freq / flow_resis) ** -0.73)
         # Charactheristic Impedance (zc)
@@ -41,7 +41,7 @@ def delany_bazley(flow_resis: float, air_dens: float, sound_spd: float,
         # Wave Number (kc)
         kc = (2 * np.pi * freq / sound_spd) * (alpha + 1j * beta)
 
-    elif var == 'miki':  # Miki variation
+    elif var == 'miki':
         R = 1 + 5.50 * ((1e3 * freq / flow_resis) ** -0.632)
         X = -8.43 * ((1e3 * freq / flow_resis) ** -0.632)
         # Charactheristic Impedance (zc)
@@ -52,7 +52,7 @@ def delany_bazley(flow_resis: float, air_dens: float, sound_spd: float,
         # Wave Number (kc)
         kc = (2 * np.pi * freq / sound_spd) * (alpha + 1j * beta)
 
-    elif var == 'allard-champoux':  # Allard and Champoux variation
+    elif var == 'allard-champoux':
         R = 1 + 0.0571 * (((air_dens*freq) / flow_resis) ** -0.754)
         X = -0.0870 * (((air_dens*freq) / flow_resis) ** -0.732)
         # Charactheristic Impedance (zc)
