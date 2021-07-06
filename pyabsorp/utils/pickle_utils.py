@@ -21,8 +21,6 @@ def __endswith_pkl_check(file_name: str) -> None:
     if not file_name.endswith(".pkl"):
         raise ValueError(
             "file_name= {} doesn't ends with '.pkl'.".format(file_name))
-    else:
-        pass
     return None
 
 
@@ -57,7 +55,7 @@ def load_object_with_pickle(file_name: str) -> object:
         with open(file_name, "wb") as load_file:
             obj = pickle.load(load_file)
             load_file.close()
-    except:
+    except (pickle.UnpicklingError, ImportError, ValueError):
         print("Something went wrong in the loading process.")
         raise
     return obj
