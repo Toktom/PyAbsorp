@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Author: Michael Markus Ackermann
 ================================
@@ -14,14 +15,14 @@ formats = {"circle": 1,
            "retangular": 0.81}
 
 
-def shear_wave(omega: List[float], flow_resis: float, poros: float, tortu: float,
-               shape: str, air_dens: float) -> float:
+def shear_wave(omega: List[float], flow_resis: float, poros: float,
+               tortu: float, shape: str, air_dens: float) -> float:
     """
     Returns the Shear Wave number.
 
     Args:
         omega (List[float]): Array of angular frequencies.
-        flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
+        flow_resis (float): Static flow resistivity of the material [Ns/(m^4)].
         poros (float): Material open porosity, between 0 and 1.
         tortu (float): Material tortuosity.
         shape (str): Form factor for simple pores, must be a 'circle',
@@ -45,7 +46,7 @@ def biot_allard(flow_resis: float, air_dens: float, poros: float, tortu: float,
     Impedance and the Material Wave Number.
 
     Args:
-        flow_resis (float): Static flow resistivity of the material  [Ns/(m^4)].
+        flow_resis (float): Static flow resistivity of the material [Ns/(m^4)].
         air_dens (float): Air density [kg/(m^3)].
         poros (float): Material open porosity, between 0 and 1.
         tortu (float): Material tortuosity.

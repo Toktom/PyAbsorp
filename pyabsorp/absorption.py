@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Author: Michael Markus Ackermann
 ================================
@@ -7,8 +8,8 @@ from typing import List
 import numpy as np
 
 
-def absorption_coefficient(zc: List[complex], kc: List[complex], thickness: float,
-                           z_air: float):
+def absorption_coefficient(zc: List[complex], kc: List[complex],
+                           thickness: float, z_air: float):
     """
     Returns the Sound Absorption Coefficient.
     NOTE 1: The values for 'zc' and 'kc' are already divided by the porosity.

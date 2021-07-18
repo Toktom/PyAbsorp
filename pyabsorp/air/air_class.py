@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Author: Michael Markus Ackermann
 ================================
@@ -5,6 +6,7 @@ Air class.
 """
 from dataclasses import field, dataclass
 from pyabsorp.air import air_properties
+import pyabsorp.utils.__classes_metadata as cm
 
 
 @dataclass
@@ -19,7 +21,7 @@ class Air:
         kappa (float, optional): W/(mK) air. Defaults to 0.026.
         air_constant (float, optional): Gas constant for air (J/K/kg).
                                         Defaults to 287.031.
-        water_constant (float, optional): Gas constant for water vapor (J/K/kg).
+        water_constant (float, optional): Gas constant for water steam (J/K/kg).
                                 Defaults to 461.521.
 
     Returns:
@@ -27,22 +29,22 @@ class Air:
 
     """
     temperature: float = field(default=20, metadata=dict(
-        title="Enverioment temperature", description="Should be Celsius degrees [°C]"))
+        title=cm.temp_md[0], description=cm.temp_md[1]))
 
     humidity: float = field(default=50, metadata=dict(
-        title="Relative humidity", description="Should be in as percentage [%]"))
+        title=cm.hum_md[0], description=cm.hum_md[1]))
 
     atmospheric_pressure: float = field(default=101325, metadata=dict(
-        title="Atmospheric pressure", description="Should be in Pascals [Pa]"))
+        title=cm.atm_md[0], description=cm.atm_md[1]))
 
     kappa: float = field(default=0.026, metadata=dict(
-        title="Kappa", description="Constant"))
+        title=cm.kappa_md[0], description=cm.kappa_md[1]))
 
     air_constant: float = field(default=287.031, metadata=dict(
-        title="Gas constant for air", description="Should be in [J/K/kg]"))
+        title=cm.air_c_md[0], description=cm.air_c_md[1]))
 
     water_constant: float = field(default=461.521, metadata=dict(
-        title="Gas constant for water steam", description="Should be in [J/K/kg]"))
+        title=cm.water_c_md[0], description=cm.water_c_md[1]))
 
     def __post_init__(self):
         properties = air_properties(self.temperature, self.humidity,

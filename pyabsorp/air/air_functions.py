@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 """
 Author: Michael Markus Ackermann
 ================================
@@ -66,8 +66,7 @@ def viscosity(t: float) -> float:
     Returns:
         float: Air dynamic vicosity [Ns/(m^2)].
     """
-    viscosity = 7.72488e-8 * t - 5.95238e-11 * t**2 + 2.71368e-14 * t**3
-    return viscosity
+    return 7.72488e-8 * t - 5.95238e-11 * t**2 + 2.71368e-14 * t**3
 
 
 def pierce(t: float) -> float:
@@ -79,8 +78,7 @@ def pierce(t: float) -> float:
     Returns:
         float: Pierce.
     """
-    p = 0.0658 * t**3 - 53.7558 * t**2 + 14703.8127 * t - 1345485.0465
-    return p
+    return 0.0658 * t**3 - 53.7558 * t**2 + 14703.8127 * t - 1345485.0465
 
 
 def specific_heat_constant_pressure(t: float) -> float:
@@ -92,9 +90,8 @@ def specific_heat_constant_pressure(t: float) -> float:
     Returns:
         float: Spectfic Heat Constant Pressure [J/kg*K].
     """
-    Cp = 4168.8 * (0.249679 - 7.55179e-5 * t +
-                   1.69194e-7 * t**2 - 6.46128e-11 * t**3)
-    return Cp
+    return 4168.8 * (0.249679 - 7.55179e-5 * t + 1.69194e-7 * t**2 -
+                     6.46128e-11 * t**3)
 
 
 def specific_heat_constant_volume(Cp: float, AIR_CONST=287.031) -> float:
@@ -108,8 +105,7 @@ def specific_heat_constant_volume(Cp: float, AIR_CONST=287.031) -> float:
     Returns:
         float: Spectfic Heat Constant Volume [J/kg/K].
     """
-    Cv = Cp - AIR_CONST
-    return Cv
+    return Cp - AIR_CONST
 
 
 def prandtl(viscosity: float, Cp: float, KAPPA=0.026) -> float:
@@ -123,8 +119,7 @@ def prandtl(viscosity: float, Cp: float, KAPPA=0.026) -> float:
     Returns:
         float: Prandtl number.
     """
-    prandtl = viscosity * Cp / KAPPA
-    return prandtl
+    return viscosity * Cp / KAPPA
 
 
 def specific_heat_ratio(Cp: float, Cv: float) -> float:
@@ -137,12 +132,12 @@ def specific_heat_ratio(Cp: float, Cv: float) -> float:
     Returns:
         float: Specific heat ratio [no units].
     """
-    gama = Cp / Cv
-    return gama
+    return Cp / Cv
 
 
 def air_density(t: float, humidity: float, atmospheric_pressure: float,
-                pierce: float, AIR_CONST=287.031, WATER_CONST=461.521) -> float:
+                pierce: float, AIR_CONST=287.031,
+                WATER_CONST=461.521) -> float:
     """Calculates the air density.
 
     Args:
@@ -150,19 +145,20 @@ def air_density(t: float, humidity: float, atmospheric_pressure: float,
         humidity (float): Air humidity [%].
         atmospheric_pressure (float): Atmospheric pressure [Pa].
         pierce (float): Pierce.
-        AIR_CONST (float, optional): Gas constant for air [J/K/kg]. Defaults to 287.031.
+        AIR_CONST (float, optional): Gas constant for air [J/K/kg].
+                                        Defaults to 287.031.
         WATER_CONST (float, optional): Gas constant for water vapor [J/K/kg].
                                         Defaults to 461.521.
 
     Returns:
         float: Air density [kg/(m^3)]
     """
-    air_densinty = atmospheric_pressure / (AIR_CONST * t) \
+    return atmospheric_pressure / (AIR_CONST * t) \
         - (1 / AIR_CONST - 1 / WATER_CONST) * humidity / 100 * pierce / t
-    return air_densinty
 
 
-def sound_speed(gama: float, atmospheric_pressure: float, air_density: float) -> float:
+def sound_speed(gama: float, atmospheric_pressure: float,
+                air_density: float) -> float:
     """Calculates the speed of the sound in air.
 
     Args:
@@ -173,8 +169,7 @@ def sound_speed(gama: float, atmospheric_pressure: float, air_density: float) ->
     Returns:
         float: Sound speed in the air [m/s].
     """
-    c = (gama * atmospheric_pressure / air_density) ** 0.5
-    return c
+    return (gama * atmospheric_pressure / air_density) ** 0.5
 
 
 def air_impedance(sound_speed: float, air_density: float) -> float:
@@ -187,5 +182,4 @@ def air_impedance(sound_speed: float, air_density: float) -> float:
     Returns:
         float: Characteristic Impedance of the Air [Rayl]
     """
-    z = sound_speed * air_density
-    return z
+    return sound_speed * air_density

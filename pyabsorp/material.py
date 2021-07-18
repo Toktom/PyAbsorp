@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 """
+Author: João Vitor Gutkoski Paes
+Coauthor: Michael Markus Ackermann
+================================
 Provide basic interface to handle a single material being studied.
-
-
-Created on Wed Jul 29 23:09:54 2020
-Changed on Fri Jun 04 18:13:22 2021
-
-author: João Vitor Gutkoski Paes
-coauthor: Michael Markus Ackermann
 """
 import numpy as np
 from dataclasses import field, dataclass
 from pyabsorp.air import Air
 from pyabsorp.absorption import absorption_coefficient
-from pyabsorp.models import delany_bazley, rayleigh, biot_allard, johnson_champoux
+from pyabsorp.models import delany_bazley, rayleigh, biot_allard, \
+    johnson_champoux
+import pyabsorp.utils.__classes_metadata as cm
 
 
 @dataclass
@@ -54,27 +52,26 @@ class Material:
     """
 
     air: Air = field(default=None, metadata=dict(
-        title="Air object", description="Pyaborp.Air instance"))
+        title=cm.air_md[0], description=cm.air_md[1]))
     thickness: float = field(default=None, metadata=dict(
-        title="Material thickness", description="Should be in [m]"))
+        title=cm.thick_md[0], description=cm.thick_md[1]))
     porosity: float = field(default=None, metadata=dict(
-        title="Material porosity", description="Should be between 0 an 1"))
+        title=cm.poro_md[0], description=cm.poro_md[1]))
     tortuosity: float = field(default=None, metadata=dict(
-        title="Material tortuosity", description="Material tortuosity"))
+        title=cm.tortu_md[0], description=cm.tortu_md[1]))
     flow_resistivity: float = field(default=None, metadata=dict(
-        title="Static flow resistivity", description="Should be in [Ns/(m^4)]"))
+        title=cm.flow_md[0], description=cm.flow_md[1]))
     thermal_length: float = field(default=None, metadata=dict(
-        title="Thermal length", description="Thermal characteristic length [m]"))
+        title=cm.th_l_md[0], description=cm.th_l_md[1]))
     viscosity_length: float = field(default=None, metadata=dict(
-        title="Viscosity length", description="Viscous characteristic length [m]"))
+        title=cm.vs_l_md[0], description=cm.vs_l_md[1]))
     thermal_permeability: float = field(default=None, metadata=dict(
-        title="Thermal permeability", description="Static thermal permeability [m^2]"))
+        title=cm.th_p_md[0], description=cm.th_p_md[1]))
     shape: str = field(default=None, metadata=dict(
-        title="Shape", description="The shape of the must be a 'circle', 'square', \
-            'equilateral triangular' or 'retangular'"))
-    frequencies: np.ndarray = field(default=np.arange(
-        100, 10001, 1), metadata=dict(title="Frequencies", description="Should be an \
-            array of frequencies"))
+        title=cm.shape_md[0], description=cm.shape_md[1]))
+    frequencies: np.ndarray = field(default=np.arange(100, 10001, 1),
+                                    metadata=dict(title=cm.freq_md[0],
+                                    description=cm.freq_md[1]))
 
     __annotations__ = {
         'air': Air,
@@ -97,20 +94,20 @@ class Material:
         The material will hold the resulting `absorption` coefficients and the
         respective characteristic `impedance` and wave number (`waveNum`).
 
-        Only the result of one call can be held. This means that a comparison between
-        methods, or method variations must save separatedly each `absorption` array.
-        This behaviour may change in the future.
+        Only the result of one call can be held. This means that a comparison
+        between methods, or method variations must save separatedly each
+        `absorption` array. This behaviour may change in the future.
 
         Can use `method` variations by providing the `var` parameter.
 
 
         Args:
-            frequencies (np.ndarray): Array of frequencies used to estimate `impedance`,
-                `waveNum` and `absorption`.
-            method (str): Names or first letters of desired method, e.g. 'rayleigh' for
-                Rayleigh, or 'jc' for Johnson-Champoux.
-            var (str, optional): Name of the method variation, see `johnson_champoux`.
-                The default is 'default'.
+            frequencies (np.ndarray): Array of frequencies used to estimate
+                `impedance`, `waveNum` and `absorption`.
+            method (str): Names or first letters of desired method, e.g.
+                'rayleigh' for Rayleigh, or 'jc' for Johnson-Champoux.
+            var (str, optional): Name of the method variation, see
+                `johnson_champoux`. The default is 'default'.
 
         Raises:
             ValueError: If some of the `method`'s required parameter is None
@@ -140,32 +137,39 @@ class Material:
                         self.tortuosity, self.shape]):
                 raise ValueError("Some material parameters are not defined.")
 
-            zc, kc = biot_allard(self.flow_resistivity, self.air.density, self.porosity,
-                                 self.tortuosity, self.air.specific_heat_ratio,
-                                 self.air.prandtl, self.air.atmospheric_pressure,
+            zc, kc = biot_allard(self.flow_resistivity, self.air.density,
+                                 self.porosity, self.tortuosity,
+                                 self.air.specific_heat_ratio,
+                                 self.air.prandtl,
+                                 self.air.atmospheric_pressure,
                                  self.shape, frequencies)
 
         elif method.upper() in ['JC', 'JOHNSON-CHAMPOUX']:
-            if not all([self.flow_resistivity, self.porosity, self.thermal_length,
-                        self.tortuosity, self.viscosity_length]):
+            if not all([self.flow_resistivity, self.porosity,
+                        self.thermal_length, self.tortuosity,
+                        self.viscosity_length]):
                 raise ValueError("Some material parameters are not defined.")
 
             zc, kc = johnson_champoux(self.flow_resistivity, self.air.density,
                                       self.porosity, self.tortuosity,
-                                      self.air.specific_heat_ratio, self.air.prandtl,
+                                      self.air.specific_heat_ratio,
+                                      self.air.prandtl,
                                       self.air.atmospheric_pressure,
-                                      self.viscosity_length, self.thermal_length,
-                                      self.air.viscosity,
+                                      self.viscosity_length,
+                                      self.thermal_length, self.air.viscosity,
                                       0 if not self.thermal_permeability else self.thermal_permeability,
-                                      self.air.specific_heat_cp, frequencies, var)
+                                      self.air.specific_heat_cp, frequencies,
+                                      var)
 
         else:
             raise ValueError(f"Unknown method {method}.")
         self.frequencies = frequencies
         self.impedance = zc
         self.wave_number = kc
-        self.absorption = absorption_coefficient(self.impedance, self.wave_number,
-                                                 self.thickness, self.air.impedance)
+        self.absorption = absorption_coefficient(self.impedance,
+                                                 self.wave_number,
+                                                 self.thickness,
+                                                 self.air.impedance)
         return self.absorption
 
     def __repr__(self) -> str:

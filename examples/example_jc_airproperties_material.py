@@ -1,15 +1,11 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Example script to estimate a material absorption coeficient.
-Using AirProperties and Material classes within same Johnson-Champoux example code.
+Using Air and Material classes within same Johnson-Champoux example code.
 
-Created on Thu Jul 30 00:55:08 2020
-
-author: João Vitor Gutkoski Paes
+Author: João Vitor Gutkoski Paes
 """
-
-import numpy as np
+# import numpy as np
 from matplotlib import pyplot as plt
 import pyabsorp as ab  # Must be in the same folder as this file
 
@@ -23,8 +19,9 @@ air = ab.Air(temperature=25, humidity=30, atmospheric_pressure=101320)
 # Using new Material class
 # Most of these values should be acquired from laboratory measurements.
 # Bibliography values are also good for code testing and validation.
-mat = ab.Material(air=air, thickness=0.05, flow_resistivity=35000, porosity=0.65,
-                  tortuosity=1., viscosity_length=750e-5, thermal_length=500e-5,
+mat = ab.Material(air=air, thickness=0.05, flow_resistivity=35000,
+                  porosity=0.65, tortuosity=1., viscosity_length=750e-5,
+                  thermal_length=500e-5,
                   thermal_permeability=((0.65/8)*(500e-5)**2))
 
 

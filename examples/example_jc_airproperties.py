@@ -37,15 +37,17 @@ absorption0 = ab.absorption_coefficient(zc, Kc, d, air.impedance)
 # Johnson-Champoux-Allard formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air.density, poros, tortu,
                              air.specific_heat_ratio, air.prandtl,
-                             air.atmospheric_pressure, visc, term, air.viscosity,
-                             air.specific_heat_cp, var='allard')
+                             air.atmospheric_pressure, visc, term,
+                             air.viscosity, air.specific_heat_cp,
+                             var='allard')
 absorption1 = ab.absorption_coefficient(zc, Kc, d, air.impedance)
 
 # Johnson-Champoux-Allard-Lafarge formulation
 zc, Kc = ab.johnson_champoux(flow_resist, air.density, poros, tortu,
                              air.specific_heat_ratio, air.prandtl,
-                             air.atmospheric_pressure, visc, term, air.viscosity,
-                             therm_perm, air.specific_heat_cp, var='lafarge')
+                             air.atmospheric_pressure, visc, term,
+                             air.viscosity, therm_perm,
+                             air.specific_heat_cp, var='lafarge')
 absorption2 = ab.absorption_coefficient(zc, Kc, d, air.impedance)
 
 # Putting all together

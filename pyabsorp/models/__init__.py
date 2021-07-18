@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Author: Michael Markus Ackermann
 ================================
@@ -27,8 +28,9 @@ from .rayleigh import rayleigh
 from .biot_allard import biot_allard
 from .johnson_champoux import johnson_champoux
 
-__all__ = [  # Functions
-            'delany_bazley',
-            'rayleigh',
-            'biot_allard',
-            'johnson_champoux']
+__all__ = [
+    # Functions
+    'delany_bazley',
+    'rayleigh',
+    'biot_allard',
+    'johnson_champoux']

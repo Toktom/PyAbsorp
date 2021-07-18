@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 """
 Author: Michael Markus Ackermann
 ================================
+Pickle utils
 """
 
 import pickle
