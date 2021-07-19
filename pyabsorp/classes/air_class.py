@@ -5,8 +5,8 @@ Author: Michael Markus Ackermann
 Air class.
 """
 from dataclasses import field, dataclass
-from pyabsorp.air import air_properties
-import pyabsorp.utils.__classes_metadata as cm
+from pyabsorp.functions import air_properties
+import pyabsorp.classes.__classes_metadata as cm
 
 
 @dataclass

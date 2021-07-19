@@ -7,11 +7,11 @@ Provide basic interface to handle a single material being studied.
 """
 import numpy as np
 from dataclasses import field, dataclass
-from pyabsorp.air import Air
-from pyabsorp.absorption import absorption_coefficient
+from pyabsorp.classes import Air
+from pyabsorp.functions import absorption_coefficient
 from pyabsorp.models import delany_bazley, rayleigh, biot_allard, \
     johnson_champoux
-import pyabsorp.utils.__classes_metadata as cm
+import pyabsorp.classes.__classes_metadata as cm
 
 
 @dataclass
