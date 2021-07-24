@@ -21,8 +21,8 @@ class Air:
         kappa (float, optional): W/(mK) air. Defaults to 0.026.
         air_constant (float, optional): Gas constant for air (J/K/kg).
                                         Defaults to 287.031.
-        water_constant (float, optional): Gas constant for water steam (J/K/kg).
-                                Defaults to 461.521.
+        water_constant (float, optional): Gas constant for water steam
+                                        (J/K/kg). Defaults to 461.521.
 
     Returns:
         None.
@@ -59,5 +59,16 @@ class Air:
         self.specific_heat_cp = properties[6]
 
     def __repr__(self) -> str:
-        return f'Air(temperature={self.temperature}, humidity={self.humidity},\
-            atmospheric_pressure={self.atmospheric_pressure})'
+        return f"""Air(temperature={self.temperature},
+            \nhumidity={self.humidity},
+            \natmospheric_pressure={self.atmospheric_pressure},
+            \nkappa={self.kappa},
+            \nair_constant={self.air_constant},
+            \nwater_constant={self.water_constant},
+            \nspeed={self.speed},
+            \ndensity={self.density}),
+            \nimpedance={self.impedance},
+            \nviscosity={self.viscosity},
+            \nspecific_heat_ratio={self.specific_heat_ratio},
+            \nspecific_heat_cp={self.specific_heat_cp},
+            \nprandtl={self.prandtl})"""

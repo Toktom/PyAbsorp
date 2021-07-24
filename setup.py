@@ -18,7 +18,7 @@ settings = {
     'install_requires': [
         'numpy>=1.20.3',
         'scipy>=1.6.3'],
-    'packages': ['pyabsorp', 'pyabsorp.models', 'pyabsorp.air', 'pyabsorp.utils']
+    'packages': ['pyabsorp', 'pyabsorp.models', 'pyabsorp.classes', 'pyabsorp.utils']
 }
 
 setup(**settings)

@@ -19,8 +19,8 @@ def air_properties(t: float, humidity: float, atmospheric_pressure: float,
         kappa (float, optional): W/(mK) air. Defaults to 0.026.
         air_constant (float, optional): Gas constant for air [J/K/kg].
                                         Defaults to 287.031.
-        water_constant (float, optional): Gas constant for water vapor [J/K/kg].
-                                Defaults to 461.521.
+        water_constant (float, optional): Gas constant for water vapor
+                                        [J/K/kg]. Defaults to 461.521.
 
     Returns:
         c0 (float): The speed of the sound in the air [m/s].
