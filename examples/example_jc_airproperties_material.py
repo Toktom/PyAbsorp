@@ -36,7 +36,7 @@ plt.title("Sound Absorption Coefficient Chart")
 
 for label, var in zip(legends, variations):
     # Calculate the absorption for a given variation
-    mat.estimate_absorption(mat.frequencies, method='jc', var=var)
+    mat.estimate_absorption(method='jc', var=var)
 
     # Draw the lines
     plt.semilogx(mat.frequencies, 100*mat.absorption, label=label)

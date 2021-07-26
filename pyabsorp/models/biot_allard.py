@@ -5,7 +5,7 @@ Author: Michael Markus Ackermann
 Here you will find everything related to the biot-allard model.
 """
 import numpy as np
-from typing import List
+from typing import List, Tuple
 from scipy import special as ss
 
 
@@ -40,7 +40,7 @@ def shear_wave(omega: List[float], flow_resis: float, poros: float,
 
 def biot_allard(flow_resis: float, air_dens: float, poros: float, tortu: float,
                 gama: float, prandtl: float, atm: float, shape: str,
-                freq=np.arange(100, 10001, 1)):
+                freq=np.arange(100, 10001, 1)) -> Tuple[np.ndarray, np.ndarray]:
     """
     Returns through the Biot-Allard Model the Material Charactheristic
     Impedance and the Material Wave Number.

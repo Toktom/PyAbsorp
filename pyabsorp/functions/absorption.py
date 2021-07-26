@@ -9,7 +9,7 @@ import numpy as np
 
 
 def absorption_coefficient(zc: List[complex], kc: List[complex],
-                           thickness: float, z_air: float):
+                           thickness: float, z_air: float) -> np.ndarray:
     """
     Returns the Sound Absorption Coefficient.
     NOTE 1: The values for 'zc' and 'kc' are already divided by the porosity.
@@ -22,7 +22,7 @@ def absorption_coefficient(zc: List[complex], kc: List[complex],
         z_air (float):  Air Characteristic Impedance.
 
     Returns:
-        absorption (np. ndarray): Sound Absorption Coefficient [no units].
+        absorption (np.ndarray): Sound Absorption Coefficient [no units].
     """
     zs = -1j * (zc / np.tan(kc * thickness))  # Surface impedance (zs)
     vp = (zs - z_air) / (zs + z_air)  # Reflection coefficient (vp)

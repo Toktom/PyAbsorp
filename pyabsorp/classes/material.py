@@ -86,8 +86,8 @@ class Material:
         'frequencies': np.ndarray
     }
 
-    def estimate_absorption(self, frequencies: np.ndarray, method: str,
-                            var: str = 'default'):
+    def estimate_absorption(self, method: str, var: str = 'default',
+                            frequencies: np.ndarray = None) -> np.ndarray:
         """
         Estimate material absorption based on `method`.
 
@@ -102,13 +102,13 @@ class Material:
 
 
         Args:
-            frequencies (np.ndarray): Array of frequencies used to estimate
-                `impedance`, `waveNum` and `absorption`.
             method (str): Names or first letters of desired method, e.g.
                 'rayleigh' for Rayleigh, or 'jc' for Johnson-Champoux.
             var (str, optional): Name of the method variation, see
                 `johnson_champoux`. The default is 'default'.
-
+            frequencies (np.ndarray): Array of frequencies used to estimate
+                `impedance`, `waveNum` and `absorption`.
+                
         Raises:
             ValueError: If some of the `method`'s required parameter is None
                 or an unknown `method` is specified.
@@ -117,6 +117,12 @@ class Material:
             None.
 
         """
+        if not frequencies:
+            try:
+                frequencies = self.frequencies
+            except Exception:
+                raise ValueError("Array of frequencies not found.")
+
         if method.upper() in ['DB', 'DELANY-BAZLEY']:
             if not all([self.flow_resistivity]):
                 raise ValueError("Some material parameters are not defined.")
@@ -162,7 +168,7 @@ class Material:
                                       var)
 
         else:
-            raise ValueError(f"Unknown method {method}.")
+            raise ValueError(f"'method = {method}' isn't a valid method.")
         self.frequencies = frequencies
         self.impedance = zc
         self.wave_number = kc

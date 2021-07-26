@@ -5,10 +5,11 @@ Author: Michael Markus Ackermann
 Here you will find everything related to the rayleigh model.
 """
 import numpy as np
+from typing import Tuple
 
 
-def rayleigh(flow_resis: float, air_dens: float, sound_spd: float,
-             poros: float, freq=np.arange(100, 10001, 1)):
+def rayleigh(flow_resis: float, air_dens: float, sound_spd: float, poros: float,
+             freq=np.arange(100, 10001, 1)) -> Tuple[np.ndarray, np.ndarray]:
     """
     Returns through the Rayleigh Model the Material Charactheristic Impedance
     and the Material Wave Number.
@@ -30,4 +31,4 @@ def rayleigh(flow_resis: float, air_dens: float, sound_spd: float,
     # Material Charactheristic Impedance (zc) and the Material Wave Number (kc)
     kc = (omega/sound_spd) * alpha
     zc = ((air_dens * sound_spd)/poros) * alpha
-    return zc, kc
+    return (zc, kc)
