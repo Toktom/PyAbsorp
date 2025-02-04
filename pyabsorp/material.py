@@ -69,7 +69,7 @@ class Material:
         title=cm.th_p_md[0], description=cm.th_p_md[1]))
     shape: str = field(default=None, metadata=dict(
         title=cm.shape_md[0], description=cm.shape_md[1]))
-    frequencies: np.ndarray = field(default=np.arange(100, 10001, 1),
+    frequencies: np.ndarray = field(default_factory=lambda: np.arange(100, 10001, 1),
                                     metadata=dict(title=cm.freq_md[0],
                                     description=cm.freq_md[1]))
 
